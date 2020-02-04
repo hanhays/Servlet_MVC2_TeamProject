@@ -40,12 +40,8 @@ public class BoardDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			rs =null;
-			pstmt =null;
-			conn = null;
-			System.gc();
 		}
 	}
+	
 
 }

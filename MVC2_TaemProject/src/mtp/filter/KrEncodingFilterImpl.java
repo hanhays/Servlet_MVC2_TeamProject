@@ -32,7 +32,7 @@ public class KrEncodingFilterImpl implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("enu-kr");
+		request.setCharacterEncoding("euc-kr");
 		response.setContentType("text/html; charset=euc-kr");
 		chain.doFilter(request, response);
 	}
