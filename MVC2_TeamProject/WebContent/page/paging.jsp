@@ -8,15 +8,15 @@
 </c:if>
 
 <c:if test="${pv.currentPage > 1 }">
-	<a href='list.do?currentPage=${pv.currentPage -1 }'> < &nbsp;&nbsp; </a>
+	<a href='list.do?currentPage=${pv.currentPage -1 }'>&lt; &nbsp;&nbsp; </a>
 </c:if>
 
 <c:forEach var="i" begin="${pv.beginPageNum }" end="${pv.stopPageNum }">
-	<a style="font-size: 20px; ${i == pv.currentPage? 'color:purple':''}" href="list.do?currentPage=${i }">${i }</a> &nbsp;&nbsp;
+	<a style="font-size: 20px; ${i == pv.currentPage? 'color:purple':''}" href="list.do?currentPage=${i }">${i +1}</a> &nbsp;&nbsp;
 </c:forEach>
 
 <c:if test="${pv.currentPage < pv.totalPage }">
-	<a href='list.do?currentPage=${pv.currentPage +1 }'> > &nbsp;&nbsp; </a>
+	<a href='list.do?currentPage=${pv.currentPage +1 }'> &gt; &nbsp;&nbsp; </a>
 </c:if>
 
 <c:if test="${pv.currentPage < pv.totalPage - 10 }">

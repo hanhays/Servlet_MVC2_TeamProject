@@ -12,6 +12,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+	<c:if test="${not empty sessionScope.dto }">
+	<c:set value="${sessionScope.dto.m_grade }" var="s_grade" />
+	</c:if>
 	<a href="../">홈</a>
 	<c:choose>
 		<c:when test="${not empty requestScope.dto }">
@@ -50,7 +53,7 @@
 				</tr>
 				<tr>
 					<th>Grade</th>
-					<c:set value="${dto.m_grade }" var="grade" />
+					<c:set value="${requestScope.dto.m_grade }" var="grade"/>
 					<c:choose>
 						<c:when test="${grade eq 97 }">
 							<td>일반회원</td>
@@ -65,6 +68,9 @@
 				</tr>
 			</table>
 			<div>
+				<c:if test="${s_grade eq 98 }">
+				<a href="list.do">관리자리스트</a>
+				</c:if>
 				<a href="updateui.do">회원수정</a>
 				<a href="deleteui.do">회원탈퇴</a>
 				<a href="../board/list.do">내가쓴글보기</a>

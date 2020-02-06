@@ -38,7 +38,7 @@
 					var str = '';
 					$.each(arr, function(i) {
 						str += '<tr>';
-						str += '<td>' + arr[i].m_id + '</td>';
+						str += "<td><a href='read.do?id="+ arr[i].m_id +"'>"+arr[i].m_id +"</a></td>";
 						str += '<td>' + arr[i].m_name + '</td>';
 						str += '<td>' + arr[i].m_birth + '</td>';
 						str += '<td>' + arr[i].m_age + '</td>';
@@ -62,6 +62,7 @@
 </head>
 
 <body>
+	<a href="../">Home</a>
 	<hr>
 	<h1>관리자페이지</h1>
 	<hr>
@@ -93,7 +94,7 @@
 				<c:when test="${not empty list }"> 
 				<c:forEach items="${list }" var="dto">
 					<tr>
-						<td>${dto.m_id }</td>
+						<td><a href="read.do?id=${dto.m_id }">${dto.m_id }</a></td>
 						<td>${dto.m_name }</td>
 						<td>${dto.m_birth }</td>
 						<td>${dto.m_age }</td>
@@ -108,6 +109,6 @@
 		</tbody>
 	</table>
 	<br>
-	<jsp:include page="member_paging.jsp"></jsp:include>
-</body>
+	<jsp:include page="../page/paging.jsp"/> 
+</body> 
 </html>
