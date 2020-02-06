@@ -77,7 +77,7 @@
 			</table>
 			<div>
 				<a href="updateui.do">회원수정</a> 
-				<a href="deleteui.do">회원탈퇴</a> 
+				<a href="deleteui.do">회원탈퇴</a>  
 				<a href="../board/list.do">글목록</a>
 				<a href="../">홈</a> 
 			</div>
@@ -88,5 +88,18 @@
 			<a href="../">홈</a>
 		</c:otherwise>
 	</c:choose>
+<!-- 	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#iddea").click(function(event) {
+				event.preventDefault();
+				
+				var pw = prompt("비밀번호를 입력하세요");
+				location.assign("delete.do?password="+pw);
+				
+			});
+		});
+	</script>
+	 -->
 </body>
 </html>
