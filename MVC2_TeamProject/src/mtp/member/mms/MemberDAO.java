@@ -51,7 +51,7 @@ public class MemberDAO {
 
 	public void create(MemberDTO dto) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("insert into member2");
+		sql.append("insert into member");
 		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
 		sql.append("values(?,?,?,?,?,?,?,?)");
 //		sql에 m_img 이미지 업로드 
@@ -70,6 +70,11 @@ public class MemberDAO {
 			int i = pstmt.executeUpdate();
 			// i가 1일경우에 temp에서 member 이미지 이동하고 나서
 			// m_img의 값을 update 하고 트렌젝션 여부 확인
+	
+			pstmt.executeUpdate();
+//			int i =pstmt.executeUpdate();
+			//i가 1일경우에 temp에서 member 이미지 이동하고 나서
+			//m_img의 값을 update 하고 트렌젝션 여부 확인
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

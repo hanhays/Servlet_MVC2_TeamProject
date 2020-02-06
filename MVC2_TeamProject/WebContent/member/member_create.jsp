@@ -84,6 +84,22 @@
 
 	});
 </script>
+
+<style type="text/css">
+
+h1
+{
+	text-align : center; 
+}
+
+table
+{
+	margin : auto;
+	width : 400px;
+	
+}
+</style>
+
 </head>
 <body>
 <!-- enctype = "multipart/form-data" -->
@@ -93,17 +109,17 @@
 		<table>
 			<tr>
 				<td>ID :</td>
-				<td><input required name="m_id"><a><button>중복체크</button></a></td>
+				<td><input required name="id"><a><button>중복체크</button></a></td>
 			</tr>
 			<tr>
 				<td>PW :</td>
-				<td><input required name="m_password" type="password"></td>
+				<td><input required name="password" type="password"></td>
 			</tr>
 
 
 			<tr>
 				<td>Name :</td>
-				<td><input required name="m_name"></td>
+				<td><input required name="name"></td>
 			</tr>
 
 			<tr>
@@ -127,17 +143,17 @@
 			<%-- 		Age : <input type="number" required name="m_age"><br>  --%>
 			<tr>
 				<td>Phone:</td>
-				<td><input required name="m_phone"></td>
+				<td><input required name="phone"></td>
 			</tr>
 
 			<tr>
 				<td>Email:</td>
-				<td><input required name="m_email"></td>
+				<td><input required name="email"></td>
 			</tr>
 
 			<tr>
 				<td>Nickname:</td>
-				<td><input required name="m_nickname"><a><button>중복확인</button></a></td>
+				<td><input required name="nickname"><a><button>중복확인</button></a></td>
 			</tr>
 
 
@@ -146,7 +162,7 @@
 				<td><input type="file" name="img"></td>
 			</tr>
 			<tr>
-				<td colspan="4">
+				<td colspan = 4 style = "text-align:center">
 						<input type="submit" value="등록" ></td>
 				
 			
