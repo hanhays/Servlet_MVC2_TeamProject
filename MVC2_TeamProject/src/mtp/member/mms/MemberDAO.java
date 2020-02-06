@@ -11,7 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import mtp.paging.vo.MemberPageVO;
+import mtp.paging.vo.PageVO;
 
 public class MemberDAO {
 	private DataSource dataFactory;
@@ -47,13 +47,75 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(rs!=null)rs = null;
-			if(pstmt!=null)pstmt = null; 
-			if(conn!=null)conn = null; 
+			if (rs != null)
+				rs = null;
+			if (pstmt != null)
+				pstmt = null;
+			if (conn != null)
+				conn = null;
 			System.gc();
 		}
-	} 
-	public MemberDTO read(String id) { 
+	}
+
+	public MemberDTO updateui(String id) {
+		MemberDTO dto = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from member ");
+		sql.append("where m_id = ?");
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				dto = new MemberDTO(rs.getString("m_id"), rs.getString("m_password"), rs.getString("m_name"), rs.getString("m_birth"), rs.getInt("m_age"), 
+						rs.getString("m_phone"), rs.getString("m_email"), rs.getString("m_nickname"), rs.getString("m_img"), rs.getString("m_grade").charAt(0));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(rs, pstmt, conn);
+		}
+		
+		return dto;
+	}
+
+	public void update(MemberDTO dto) {
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("update member set ");
+		sql.append("m_password = ?, m_name = ?, m_phone = ?, m_email = ?, m_nickname =? , m_img = ? ");
+		sql.append("where m_id = ?");
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			conn.setAutoCommit(false);
+			
+			pstmt.setString(1, dto.getM_password());
+			pstmt.setString(2, dto.getM_name());
+			pstmt.setString(3, dto.getM_phone());
+			pstmt.setString(4, dto.getM_email());
+			pstmt.setString(5, dto.getM_nickname());
+			pstmt.setString(6, dto.getM_img());
+			pstmt.setString(7, dto.getM_id());
+
+			pstmt.executeUpdate();
+			conn.commit();
+			// 3항 연산자로 update 여부 return 할까말까
+			
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, conn);
+		}
+	}
+
+	public MemberDTO read(String id) {
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_img,m_grade from member ");
@@ -61,26 +123,18 @@ public class MemberDAO {
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,id);
-			rs=pstmt.executeQuery();
-			if(rs.next()) {
-				dto = new MemberDTO(rs.getString(1),
-									null,
-									rs.getString(2),
-									rs.getString(3),
-									rs.getInt(4),
-									rs.getString(5),
-									rs.getString(6),
-									rs.getString(7),
-									rs.getString(8),
-									rs.getString(9).charAt(0));
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = new MemberDTO(rs.getString(1), null, rs.getString(2), rs.getString(3), rs.getInt(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9).charAt(0));
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			closeAll(rs,pstmt,conn);
+		} finally {
+			closeAll(rs, pstmt, conn);
 		}
-		return dto ;
+		return dto;
 	}
 
 	public boolean delete(String m_id, String m_pw) {
@@ -114,8 +168,9 @@ public class MemberDAO {
 
 		return flag;
 	}
-	public MemberPageVO list(int m_currentPage) {
-		MemberPageVO mp = new MemberPageVO(m_currentPage);
+
+	public PageVO list(int m_currentPage) {
+		PageVO mp = new PageVO(m_currentPage);
 		List<MemberDTO> m_list = new ArrayList<MemberDTO>();
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from ");
@@ -123,15 +178,15 @@ public class MemberDAO {
 		sb.append("(select * from member order by m_grade desc)) ");
 		sb.append("where rnum between ? and ?");
 		try {
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(rs, pstmt, conn);
-		} 
+		}
 		return mp;
 	}
- 
+
 	public MemberDTO login(String id, String password) {
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
@@ -139,18 +194,18 @@ public class MemberDAO {
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,id);
-			pstmt.setString(2,password);
-			rs= pstmt.executeQuery();
-			if(rs.next()) {
-				dto = new MemberDTO(rs.getString("m_id"),rs.getString("m_grade").charAt(0));
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = new MemberDTO(rs.getString("m_id"), rs.getString("m_grade").charAt(0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			closeAll(rs,pstmt,conn);
+		} finally {
+			closeAll(rs, pstmt, conn);
 		}
-		
+
 		return dto;
 	}
 

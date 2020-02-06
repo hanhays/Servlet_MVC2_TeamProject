@@ -146,4 +146,13 @@ public class MemberDTO implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "MemberDTO [m_id=" + m_id + ", m_password=" + m_password + ", m_name=" + m_name + ", m_birth=" + m_birth
+				+ ", m_age=" + m_age + ", m_phone=" + m_phone + ", m_email=" + m_email + ", m_nickname=" + m_nickname
+				+ ", m_img=" + m_img + ", m_grade=" + m_grade + "]";
+	}
+
+	
 }

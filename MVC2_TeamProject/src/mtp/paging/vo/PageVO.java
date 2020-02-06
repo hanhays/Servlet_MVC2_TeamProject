@@ -2,9 +2,10 @@ package mtp.paging.vo;
 
 import java.util.List;
 
+import mtp.board.mms.BoardDTO;
 import mtp.member.mms.MemberDTO;
 
-public class MemberPageVO {
+public class PageVO {
 
 	private int currentPage = 1;
 	private int perPage = 10;
@@ -15,23 +16,18 @@ public class MemberPageVO {
 	private int endNum;
 	private int beginPageNum;
 	private int stopPageNum;
-	private List<MemberDTO> list;
-
-	public MemberPageVO() {
+	private List<MemberDTO> m_list;
+	private List<BoardDTO> b_list;
+	public PageVO() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public MemberPageVO(int currentPage) {
+	public PageVO(int currentPage) {
 		this.currentPage = currentPage;
 		executeAll();
 	}
 
 
-	public MemberPageVO(List<MemberDTO> list) {
-		
-		this.list = list;
-	}
-	
 
 	public int getCurrentPage() {
 		return currentPage;
@@ -106,12 +102,20 @@ public class MemberPageVO {
 		this.stopPageNum = stopPageNum;
 	}
 
-	public List<MemberDTO> getList() {
-		return list;
+	public List<MemberDTO> getM_list() {
+		return m_list;
 	}
 
-	public void setList(List<MemberDTO> list) {
-		this.list = list;
+	public void setM_list(List<MemberDTO> m_list) {
+		this.m_list = m_list;
+	}
+
+	public List<BoardDTO> getB_list() {
+		return b_list;
+	}
+
+	public void setB_list(List<BoardDTO> b_list) {
+		this.b_list = b_list;
 	}
 
 	public void executeAll() {
