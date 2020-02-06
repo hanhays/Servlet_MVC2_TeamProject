@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%> 
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <html>
 
@@ -18,9 +19,9 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#ajax_click").click(function(event) {
-			event.preventDefault();
+	$(function() {
+		$("#ajax_click").click(function(/* event */) {
+			//event.preventDefault(); 	
 			var category = $("select[name='category']").val();
 			var content = $("input[name='content']").val();
 			console.log(content);
@@ -88,7 +89,7 @@
 				<th>닉네임</th>
 				<th>등급</th>
 			</tr>
-		</thead>
+		</thead> 
 		<tbody id="test">
 			<c:choose>
 				<c:when test="${not empty list }"> 
@@ -96,7 +97,14 @@
 					<tr>
 						<td><a href="read.do?id=${dto.m_id }">${dto.m_id }</a></td>
 						<td>${dto.m_name }</td>
-						<td>${dto.m_birth }</td>
+						<%-- <c:set value="${dto.m_birth }" var="birth"/>
+						<c:set value="${fn:split(birth,'-')}" var="arr"/>
+						<c:set value="${arr[0] }" var="year"/>
+						<c:set value="${arr[1] }" var="month"/>
+						<c:set value ="${fn:split(arr[2],' ')[0] }" var="date"/>
+						<td>${year }년${month }월${date}일</td> --%>
+						<c:set value="${fn:split(dto.m_birth,' ')[0]}" var="birth"/>
+						<td>${birth }</td>
 						<td>${dto.m_age }</td>
 						<td>${dto.m_phone }</td>
 						<td>${dto.m_email }</td>
