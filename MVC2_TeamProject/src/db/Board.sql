@@ -7,8 +7,7 @@ b_day date default sysdate,
 b_cnt number(6) default 0,
 b_root number(10) null,
 b_step number(6) default 0,
-b_indent number(6) default 0,
-b_img varchar2(100) 
+b_indent number(6) default 0
 ) 
 
 drop table board
@@ -39,3 +38,5 @@ commit
 
 
 select * from BOARD
+
+drop table board
