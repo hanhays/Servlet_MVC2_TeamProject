@@ -2,17 +2,24 @@
     pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>MemberPaging</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
 
-</body>
-</html>
+<c:if test="${pv.currentPage > 10 }">
+	<a href='list.do?currentPage=${pv.currentPage -11 }'>&laquo;</a>
+</c:if>
+
+<c:if test="${pv.currentPage > 1 }">
+	<a href='list.do?currentPage=${pv.currentPage -1 }'> < &nbsp;&nbsp; </a>
+</c:if>
+
+<c:forEach var="i" begin="${pv.beginPageNum }" end="${pv.stopPageNum }">
+	<a style="font-size: 20px; ${i == pv.currentPage? 'color:purple':''}" href="list.do?currentPage=${i }">${i }</a> &nbsp;&nbsp;
+</c:forEach>
+
+<c:if test="${pv.currentPage < pv.totalPage }">
+	<a href='list.do?currentPage=${pv.currentPage +1 }'> > &nbsp;&nbsp; </a>
+</c:if>
+
+<c:if test="${pv.currentPage < pv.totalPage - 10 }">
+	<a href='list.do?currentPage=${pv.currentPage +10 }'>&raquo;</a>
+</c:if>
+
