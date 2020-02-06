@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import mtp.member.interfaces.MemberCommand;
 import mtp.member.mms.MemberDAO;
 import mtp.member.mms.MemberDTO;
+import mtp.util.member.MemberUtil;
 import mtp.view.forward.CommandAction;
 
 public class MemberCreateCommand implements MemberCommand {
@@ -21,27 +22,33 @@ public class MemberCreateCommand implements MemberCommand {
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String what)
 			throws IOException, ServletException {
-
-		String m_id = request.getParameter("id");
-		String m_password = request.getParameter("password");
-		String m_name = request.getParameter("name");
-		String m_birth = request.getParameter("birth");
-		String sAge = request.getParameter("age");
-		int m_age = -1;
-		if(sAge != null) {
-			m_age = Integer.parseInt(sAge);
-		}
-		String m_phone = request.getParameter("phone");
-		String m_email = request.getParameter("email");
-		String m_nickname = request.getParameter("nickname");
-		//String m_img = request.getParameter("img"); // 이미지는 파일이다. 파일올릴 수 있어야한다.
-		
-
-
+		try {
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+		String name = request.getParameter("name");
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String date = request.getParameter("date");
+		System.out.println(year);
+		System.out.println(month);
+		System.out.println(date); 
+		StringBuffer birth = new StringBuffer();
+		birth.append(year);
+		birth.append("-");
+		birth.append(month);
+		birth.append("-");
+		birth.append(date);
+		String phone = request.getParameter("phone");
+		String email = request.getParameter("email");
+		String nickname = request.getParameter("nickname");
+		String img = request.getParameter("img");
+		System.out.println(img);
+		int age = new MemberUtil().getAge(year);
 		MemberDAO dao = new MemberDAO();
-		//dao.insert(new MemberDTO(m_id,m_name,m_age));
-		
-		//바인딩할것없다./
+		dao.create(new MemberDTO(id,password,name, birth.toString(), age,phone, email,nickname, 'a'));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new CommandAction(true, "list.do");
 
 	}

@@ -24,7 +24,7 @@
 					<th>Name</th>
 					<td>${dto.m_name }</td>
 				</tr>
-				<tr>
+					<tr>
 					<th>Birth</th>
 					<c:set value="${fn:split(dto.m_birth,'-') }" var="birth" />
 					<c:set value="${birth[0] }" var="year" />
