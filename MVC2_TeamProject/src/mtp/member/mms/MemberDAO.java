@@ -90,7 +90,7 @@ public class MemberDAO {
 	public MemberDTO read(String id) { 
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_img,m_grade from member ");
+		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
 		sql.append("where m_id = ?");
 		try {
 			conn = dataFactory.getConnection();
@@ -106,8 +106,7 @@ public class MemberDAO {
 									rs.getString(5),
 									rs.getString(6),
 									rs.getString(7),
-									rs.getString(8),
-									rs.getString(9).charAt(0));
+									rs.getString(8).charAt(0));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
