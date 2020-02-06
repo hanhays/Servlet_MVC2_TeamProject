@@ -22,35 +22,37 @@ public class MemberCreateCommand implements MemberCommand {
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String what)
 			throws IOException, ServletException {
+		boolean flag = false;
 		try {
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-		String name = request.getParameter("name");
+		String m_id = request.getParameter("id");
+		String m_password = request.getParameter("password");
+		String m_name = request.getParameter("name");
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
 		String date = request.getParameter("date");
 		System.out.println(year);
 		System.out.println(month);
 		System.out.println(date); 
-		StringBuffer birth = new StringBuffer();
-		birth.append(year);
-		birth.append("-");
-		birth.append(month);
-		birth.append("-");
-		birth.append(date);
-		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
-		String nickname = request.getParameter("nickname");
-		String img = request.getParameter("img");
-		System.out.println(img);
-		int age = new MemberUtil().getAge(year);
+		StringBuffer m_birth = new StringBuffer();
+		m_birth.append(year);
+		m_birth.append("-");
+		m_birth.append(month);
+		m_birth.append("-");
+		m_birth.append(date);
+		String m_phone = request.getParameter("phone");
+		String m_email = request.getParameter("email");
+		String m_nickname = request.getParameter("nickname");
+		int m_age = new MemberUtil().getAge(year);
 		MemberDAO dao = new MemberDAO();
-		dao.create(new MemberDTO(id,password,name, birth.toString(), age,phone, email,nickname, 'a'));
+		flag = dao.create(new MemberDTO(m_id, m_password, m_name, m_birth.toString(), m_age, m_phone, m_email, m_nickname, 'a'));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new CommandAction(true, "list.do");
-
+		if(flag) {
+			return new CommandAction(true, "/MVC2_TeamProject/");
+		}
+		return new CommandAction(true,"");
 	}
 
 }
