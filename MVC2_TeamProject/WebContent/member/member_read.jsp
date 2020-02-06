@@ -50,15 +50,8 @@
 					<td>${dto.m_nickname }</td>
 				</tr>
 				<tr>
-					<th>Img</th>
-					<td>
-						<%-- <img src="${util:getImg(dto.m_img) }"> --%>${dto.m_img }</td>
-				</tr>
-				<tr>
 					<th>Grade</th>
-
 					<c:set value="${dto.m_grade }" var="grade" />
-
 					<c:choose>
 						<c:when test="${grade eq 97 }">
 							<td>일반회원</td>

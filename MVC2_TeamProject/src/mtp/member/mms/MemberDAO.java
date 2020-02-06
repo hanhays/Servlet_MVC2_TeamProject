@@ -53,10 +53,44 @@ public class MemberDAO {
 			System.gc();
 		}
 	} 
+	
+	public void create(MemberDTO dto) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("insert into member2");
+		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
+		sql.append("values(?,?,?,?,?,?,?,?)");
+//		sql에 m_img 이미지 업로드 
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getM_id());
+			pstmt.setString(2, dto.getM_password());
+			pstmt.setString(3, dto.getM_name());
+			pstmt.setString(4, dto.getM_birth());
+			pstmt.setInt(5, dto.getM_age());
+			pstmt.setString(6, dto.getM_phone());
+			pstmt.setString(7, dto.getM_email());
+			pstmt.setString(8, dto.getM_nickname());
+	
+			
+			int i =pstmt.executeUpdate();
+			//i가 1일경우에 temp에서 member 이미지 이동하고 나서
+			//m_img의 값을 update 하고 트렌젝션 여부 확인
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, conn);
+		}
+	}
+	private boolean fileupdate(Connection conn) {
+		boolean flag = false;
+		
+		return flag ;
+	}
 	public MemberDTO read(String id) { 
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_img,m_grade from member ");
+		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
 		sql.append("where m_id = ?");
 		try {
 			conn = dataFactory.getConnection();
@@ -72,8 +106,7 @@ public class MemberDAO {
 									rs.getString(5),
 									rs.getString(6),
 									rs.getString(7),
-									rs.getString(8),
-									rs.getString(9).charAt(0));
+									rs.getString(8).charAt(0));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
