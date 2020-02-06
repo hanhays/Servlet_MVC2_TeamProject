@@ -21,22 +21,16 @@ public class MemberDeleteCommand implements MemberCommand {
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String url)
 			throws IOException, ServletException {
-		boolean flag = false;
 		String password = request.getParameter("password");
-		HttpSession sess = request.getSession(false);
-		Object obj = sess.getAttribute("dto");
-		MemberDTO dto = null;
-		if (obj instanceof MemberDTO) {
-			dto = (MemberDTO) obj;
-		}
-		String id = dto.getM_id();
-		MemberDAO dao = new MemberDAO();
-		 flag = dao.delete(id, password);
+		HttpSession sess=request.getSession(false);
 		
-		if(flag) {
+		String id =((MemberDTO)sess.getAttribute("dto")).getM_id();
+		
+		if(new MemberDAO().delete(id, password)) {
 			sess.invalidate();
 			return new CommandAction(true,"/MVC2_TeamProject/");
 		}
+		
 		request.setAttribute("msg","비밀번호를 확인해 주세요.");
 		return new CommandAction(false, "deleteui.do");
 	}
