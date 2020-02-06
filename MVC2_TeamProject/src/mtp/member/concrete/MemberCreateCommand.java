@@ -22,6 +22,7 @@ public class MemberCreateCommand implements MemberCommand {
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String what)
 			throws IOException, ServletException {
+		boolean flag = false;
 		try {
 		String m_id = request.getParameter("id");
 		String m_password = request.getParameter("password");
@@ -41,18 +42,17 @@ public class MemberCreateCommand implements MemberCommand {
 		String m_phone = request.getParameter("phone");
 		String m_email = request.getParameter("email");
 		String m_nickname = request.getParameter("nickname");
-//		String m_img = request.getParameter("img");
-//		System.out.println(m_img);
 		int m_age = new MemberUtil().getAge(year);
 		MemberDAO dao = new MemberDAO();
-		dao.create(new MemberDTO(m_id, m_password, m_name, m_birth.toString(), m_age, m_phone, m_email, m_nickname, 'a'));
+		flag = dao.create(new MemberDTO(m_id, m_password, m_name, m_birth.toString(), m_age, m_phone, m_email, m_nickname, 'a'));
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return new CommandAction(true, "list.do");
-
+		if(flag) {
+			return new CommandAction(true, "/MVC2_TeamProject/");
+		}
+		return new CommandAction(true,"");
 	}
 
 }

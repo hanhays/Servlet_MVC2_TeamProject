@@ -49,8 +49,9 @@ public class MemberDAO {
 		}
 	}
 
-	public void create(MemberDTO dto) {
+	public boolean create(MemberDTO dto) {
 		StringBuffer sql = new StringBuffer();
+		boolean flag = false;
 		sql.append("insert into member");
 		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
 		sql.append("values(?,?,?,?,?,?,?,?)");
@@ -68,18 +69,13 @@ public class MemberDAO {
 			pstmt.setString(8, dto.getM_nickname());
 
 			int i = pstmt.executeUpdate();
-			// i가 1일경우에 temp에서 member 이미지 이동하고 나서
-			// m_img의 값을 update 하고 트렌젝션 여부 확인
-	
-			pstmt.executeUpdate();
-//			int i =pstmt.executeUpdate();
-			//i가 1일경우에 temp에서 member 이미지 이동하고 나서
-			//m_img의 값을 update 하고 트렌젝션 여부 확인
+			flag = i>0? true: false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(pstmt, conn);
 		}
+		return flag;
 	}
 
 	public MemberDTO read(String id) {
@@ -133,7 +129,6 @@ public class MemberDAO {
 		sql.append("from(select * from member where ");
 		switch (target) {
 		case 0:
-			sql.append("m_grade ");
 			break;
 		case 1:
 			sql.append("m_id ");
