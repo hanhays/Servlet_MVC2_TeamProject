@@ -1,20 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+	pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn"%> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
 <title>MemberRead</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+	<a href="../">홈</a>
 	<c:choose>
-
 		<c:when test="${not empty requestScope.dto }">
 			<table>
 				<tr>
@@ -31,7 +30,7 @@
 					<c:set value="${birth[0] }" var="year" />
 					<c:set value="${birth[1] }" var="month" />
 					<c:set value="${fn:split(birth[2],' ') }" var="day" />
-					<td>${year }년${month }월${day[0] }일</td>
+					<td>${year}년${month}월${day[0]}일</td>
 				</tr>
 				<tr>
 					<th>Age</th>
@@ -64,20 +63,16 @@
 						</c:otherwise>
 					</c:choose>
 				</tr>
-				<tr>
-
-				</tr>
 			</table>
 			<div>
-				<a href="updateui.do">회원수정</a> 
-				<a href="deleteui.do">회원탈퇴</a> 
-				<a href="../board/list.do">글목록</a>
-				<a href="../">홈</a> 
+				<a href="updateui.do">회원수정</a>
+				<a href="deleteui.do">회원탈퇴</a>
+				<a href="../board/list.do">내가쓴글보기</a>
 			</div>
 		</c:when>
 
 		<c:otherwise>
-			<h1>로그아웃이 되었습니다.</h1>
+			<h1>조회할 아이디가 존재하지 않습니다.</h1> 
 			<a href="../">홈</a>
 		</c:otherwise>
 	</c:choose>
