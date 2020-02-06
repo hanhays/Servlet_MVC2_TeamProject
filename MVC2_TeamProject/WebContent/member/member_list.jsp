@@ -5,7 +5,7 @@
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <html>
- 
+
 <head>
 <title>MemberList</title>
 <meta charset="EUC-KR">
