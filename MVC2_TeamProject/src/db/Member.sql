@@ -20,15 +20,18 @@ where grantee = 'C3';
 commit  
 
 insert into member(m_id,m_password,m_name,m_age,m_phone,m_email,m_nickname,m_birth) 
-
 values('g','g1234','ggg',5,'010-5555-8888','g@gmail.com','gnn','1993-03-22')
-insert into member(m_id,m_password,m_name,m_age,m_phone,m_email,m_nickname,m_birth) 
+
+insert into member(m_id,m_password,m_name,m_age,m_phone,m_email,m_nickname,m_birth)
+values('admin','1234','윤원용',29,'010-5555-8888','g@gmail.com','admin','1993-03-22')
+
+update member set m_grade = 'b' where m_id='admin';
+
+select * from member
 
 values('m001','1234','김씨',29,'010-5453-2487','ywyi1992@naver.com','첫회원임',sysdate)
 
-values('admin','1234','윤원용',29,'010-5555-8888','g@gmail.com','gnn','1993-03-22')
  
-update member set m_grade = 'b' where m_id='admin';
 
 select * from member
 select * from member where m_id = 'admin'
