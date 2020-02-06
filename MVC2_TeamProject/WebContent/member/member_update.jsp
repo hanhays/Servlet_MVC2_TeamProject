@@ -14,7 +14,7 @@
   <script type="text/javascript">
   
   $(function(){
-	  var password1 =$("input[name='m_password2']");
+	  var password1 = $("input[name='m_password2']");
 	  var test = $("input[0]").focus(function(){
 		 alert("zz"); 
 	  });
