@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mtp.member.interfaces.MemberCommand;
 import mtp.member.mms.MemberDAO;
-import mtp.paging.vo.MemberPageVO;
+import mtp.paging.vo.PageVO;
 import mtp.view.forward.CommandAction;
 
 public class MemberListCommand implements MemberCommand {
@@ -23,10 +23,9 @@ public class MemberListCommand implements MemberCommand {
 		int currentPage = 1;
 		if(currentPage_ != null) currentPage = Integer.parseInt(currentPage_);
 		
-		MemberPageVO mp = new MemberDAO().list(currentPage);
-		
-		request.setAttribute("m_list", mp.getList());
-		request.setAttribute("mp", mp);
+		PageVO pv = new MemberDAO().list(currentPage);
+		request.setAttribute("list", pv.getM_list());
+		request.setAttribute("mp", pv);
 		
 		return new CommandAction(false, "member_list.jsp"); 
 	}

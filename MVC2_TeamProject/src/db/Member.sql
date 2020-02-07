@@ -38,6 +38,7 @@ select * from member where m_id = 'admin'
 
 select * from member between ? and ?
 
+select *  from (select count(*) as c , m_id,m_age,m_name from member)
 commit
 
 

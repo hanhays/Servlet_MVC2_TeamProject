@@ -155,12 +155,15 @@ table
 				<td>Nickname:</td>
 				<td><input required name="nickname"><a><button>중복확인</button></a></td>
 			</tr>
+<<<<<<< HEAD
 
 
 	<!-- 		<tr>
 				<td>Image:</td>
 				<td><input type="file" name="img"></td>
 			</tr> -->
+=======
+>>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 			<tr>
 				<td colspan = 4 style = "text-align:center">
 						<input type="submit" value="등록" ></td>

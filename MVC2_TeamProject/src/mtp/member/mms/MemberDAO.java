@@ -11,7 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import mtp.paging.vo.MemberPageVO;
+import mtp.paging.vo.PageVO;
 
 public class MemberDAO {
 	private DataSource dataFactory;
@@ -46,13 +46,17 @@ public class MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+<<<<<<< HEAD
 		} finally {
 			System.gc();
+=======
+>>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 		}
-	} 
-	
-	public void create(MemberDTO dto) {
+	}
+
+	public boolean create(MemberDTO dto) {
 		StringBuffer sql = new StringBuffer();
+		boolean flag = false;
 		sql.append("insert into member");
 		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
 		sql.append("values(?,?,?,?,?,?,?,?)");
@@ -68,17 +72,17 @@ public class MemberDAO {
 			pstmt.setString(6, dto.getM_phone());
 			pstmt.setString(7, dto.getM_email());
 			pstmt.setString(8, dto.getM_nickname());
-	
-			pstmt.executeUpdate();
-//			int i =pstmt.executeUpdate();
-			//i가 1일경우에 temp에서 member 이미지 이동하고 나서
-			//m_img의 값을 update 하고 트렌젝션 여부 확인
+
+			int i = pstmt.executeUpdate();
+			flag = i>0? true: false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(pstmt, conn);
 		}
+		return flag;
 	}
+<<<<<<< HEAD
 	private boolean fileupdate(Connection conn) {
 		boolean flag = false;
 		
@@ -86,6 +90,10 @@ public class MemberDAO {
 	}
 	
 	public MemberDTO read(String id) { 
+=======
+
+	public MemberDTO read(String id) {
+>>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
@@ -93,76 +101,142 @@ public class MemberDAO {
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,id);
-			rs=pstmt.executeQuery();
-			if(rs.next()) {
-				dto = new MemberDTO(rs.getString(1),
-									null,
-									rs.getString(2),
-									rs.getString(3),
-									rs.getInt(4),
-									rs.getString(5),
-									rs.getString(6),
-									rs.getString(7),
-									rs.getString(8).charAt(0));
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = getRs(rs);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			closeAll(rs,pstmt,conn);
+		} finally {
+			closeAll(rs, pstmt, conn);
 		}
-		return dto ;
+		return dto;
 	}
 
 	public boolean delete(String m_id, String m_pw) {
-
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
-
 		sql.append("delete from Member");
 		sql.append("where m_id=? and m_password=?");
 
 		try {
-
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-
 			pstmt.setString(1, m_id);
 			pstmt.setString(2, m_pw);
-
 			flag = pstmt.executeUpdate() > 0 ? true : false;
-
-			/*
-			 * if(i>0) { System.out.println("삭제되었습니다."); }else {
-			 * System.out.println("비밀번호를 다시 확인해주세요."); }
-			 */
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(pstmt, conn);
 		}
-
 		return flag;
 	}
-	public MemberPageVO list(int m_currentPage) {
-		MemberPageVO mp = new MemberPageVO(m_currentPage);
-		List<MemberDTO> m_list = new ArrayList<MemberDTO>();
-		StringBuffer sb = new StringBuffer();
-		sb.append("select * from ");
-		sb.append("(select ronum rnum, m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname from ");
-		sb.append("(select * from member order by m_grade desc)) ");
-		sb.append("where rnum between ? and ?");
+
+	public PageVO listSearch(int currentPage, int target, String value) {
+		PageVO pv = new PageVO(currentPage);
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from ");
+		sql.append("(select m_id, m_name,m_birth, ");
+		sql.append("m_age,m_phone, m_email, m_nickname, m_grade,rownum rnum ");
+		sql.append("from(select * from member where ");
+		switch (target) {
+		case 0:
+			break;
+		case 1:
+			sql.append("m_id ");
+			break;
+		case 2:
+			sql.append("m_name ");
+			break;
+		case 3:
+			sql.append("m_nickname ");
+			break;
+		case 4:
+			sql.append("m_phone ");
+			break;
+		case 5:
+			sql.append("m_email ");
+			break;
+		}
+		sql.append("= ? )) ");
+		sql.append("where rnum between ? and ?");
 		try {
-			
+			conn = dataFactory.getConnection();
+			int amount = getAmount(conn);
+			pv.setAmount(amount);
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, value);
+			pstmt.setInt(2, pv.getStartNum());
+			pstmt.setInt(3, pv.getEndNum());
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				list.add(getRs(rs));
+			}
+			pv.setM_list(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(rs, pstmt, conn);
-		} 
+		}
+		return pv;
+	}
+
+	private int getAmount(Connection conn) {
+		int amount = 0;
+		String sql = "select count(*) from member";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			if (rs.next())
+				amount = rs.getInt(1);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt);
+		}
+		return amount;
+	}
+
+	public PageVO list(int currentPage) {
+		PageVO mp = new PageVO(currentPage);
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from (");
+		sql.append("select m_id, m_name,m_birth,");
+		sql.append("m_age,m_phone, m_email, m_nickname, m_grade,rownum rnum from (");
+		sql.append("select * from member order by m_id desc)) ");
+		sql.append("where rnum between ? and ?");
+		try {
+			conn = dataFactory.getConnection();
+			int amount = getAmount(conn);
+			mp.setAmount(amount);
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setInt(1, mp.getStartNum());
+			pstmt.setInt(2, mp.getEndNum());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(getRs(rs));
+			}
+			mp.setM_list(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt, conn);
+		}
 		return mp;
 	}
- 
+
+	private MemberDTO getRs(ResultSet rs) throws Exception {
+		return new MemberDTO(rs.getString(1), null, rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+				rs.getString(6), rs.getString(7), rs.getString(8).charAt(0));
+	}
+
 	public MemberDTO login(String id, String password) {
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
@@ -170,18 +244,18 @@ public class MemberDAO {
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,id);
-			pstmt.setString(2,password);
-			rs= pstmt.executeQuery();
-			if(rs.next()) {
-				dto = new MemberDTO(rs.getString("m_id"),rs.getString("m_grade").charAt(0));
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = new MemberDTO(rs.getString("m_id"), rs.getString("m_grade").charAt(0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			closeAll(rs,pstmt,conn);
+		} finally {
+			closeAll(rs, pstmt, conn);
 		}
-		
+
 		return dto;
 	}
 

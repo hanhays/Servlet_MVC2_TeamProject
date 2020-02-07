@@ -1,20 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+	pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn"%> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
 <title>MemberRead</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+	<c:if test="${not empty sessionScope.dto }">
+	<c:set value="${sessionScope.dto.m_grade }" var="s_grade" />
+	</c:if>
+	<a href="../">홈</a>
 	<c:choose>
-
 		<c:when test="${not empty requestScope.dto }">
 			<table>
 				<tr>
@@ -25,13 +27,13 @@
 					<th>Name</th>
 					<td>${dto.m_name }</td>
 				</tr>
-				<tr>
+					<tr>
 					<th>Birth</th>
 					<c:set value="${fn:split(dto.m_birth,'-') }" var="birth" />
 					<c:set value="${birth[0] }" var="year" />
 					<c:set value="${birth[1] }" var="month" />
 					<c:set value="${fn:split(birth[2],' ') }" var="day" />
-					<td>${year }년${month }월${day[0] }일</td>
+					<td>${year}년${month}월${day[0]}일</td>
 				</tr>
 				<tr>
 					<th>Age</th>
@@ -51,7 +53,7 @@
 				</tr>
 				<tr>
 					<th>Grade</th>
-					<c:set value="${dto.m_grade }" var="grade" />
+					<c:set value="${requestScope.dto.m_grade }" var="grade"/>
 					<c:choose>
 						<c:when test="${grade eq 97 }">
 							<td>일반회원</td>
@@ -64,20 +66,19 @@
 						</c:otherwise>
 					</c:choose>
 				</tr>
-				<tr>
-
-				</tr>
 			</table>
 			<div>
-				<a href="updateui.do">회원수정</a> 
-				<a href="deleteui.do">회원탈퇴</a> 
-				<a href="../board/list.do">글목록</a>
-				<a href="../">홈</a> 
+				<c:if test="${s_grade eq 98 }">
+				<a href="list.do">관리자리스트</a>
+				</c:if>
+				<a href="updateui.do">회원수정</a>
+				<a href="deleteui.do">회원탈퇴</a>
+				<a href="../board/list.do">내가쓴글보기</a>
 			</div>
 		</c:when>
 
 		<c:otherwise>
-			<h1>로그아웃이 되었습니다.</h1>
+			<h1>조회할 아이디가 존재하지 않습니다.</h1> 
 			<a href="../">홈</a>
 		</c:otherwise>
 	</c:choose>
