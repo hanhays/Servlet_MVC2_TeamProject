@@ -46,19 +46,20 @@ public class MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			System.gc();
 		}
 	}
 
 	public boolean create(MemberDTO dto) {
-		StringBuffer sql = new StringBuffer();
 		boolean flag = false;
+		StringBuffer sql = new StringBuffer();
 		sql.append("insert into member");
 		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
 		sql.append("values(?,?,?,?,?,?,?,?)");
-//		sql에 m_img 이미지 업로드 
 		try {
 			conn = dataFactory.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
+			pstmt =conn.prepareStatement(sql.toString());
 			pstmt.setString(1, dto.getM_id());
 			pstmt.setString(2, dto.getM_password());
 			pstmt.setString(3, dto.getM_name());
@@ -67,49 +68,6 @@ public class MemberDAO {
 			pstmt.setString(6, dto.getM_phone());
 			pstmt.setString(7, dto.getM_email());
 			pstmt.setString(8, dto.getM_nickname());
-
-			int i = pstmt.executeUpdate();
-			flag = i>0? true: false;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			closeAll(pstmt, conn);
-		}
-		return flag;
-	}
-
-	public MemberDTO read(String id) {
-		MemberDTO dto = null;
-		StringBuffer sql = new StringBuffer();
-		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
-		sql.append("where m_id = ?");
-		try {
-			conn = dataFactory.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				dto = getRs(rs);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			closeAll(rs, pstmt, conn);
-		}
-		return dto;
-	}
-
-	public boolean delete(String m_id, String m_pw) {
-		boolean flag = false;
-		StringBuffer sql = new StringBuffer();
-		sql.append("delete from Member");
-		sql.append("where m_id=? and m_password=?");
-
-		try {
-			conn = dataFactory.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, m_id);
-			pstmt.setString(2, m_pw);
 			flag = pstmt.executeUpdate() > 0 ? true : false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,6 +75,62 @@ public class MemberDAO {
 			closeAll(pstmt, conn);
 		}
 		return flag;
+	}
+
+	public boolean delete(String m_id, String m_pw) throws Exception {
+		boolean flag = false;
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from Member ");
+		sql.append("where m_id=? and m_password=?");
+		try {
+			conn = dataFactory.getConnection();
+
+			conn.setAutoCommit(false);
+
+			String password = passwordCheck(conn, m_id);
+
+			pstmt = conn.prepareStatement(sql.toString());
+
+			if (password != null ? password.equals(m_pw) : false) {
+				pstmt.setString(1, m_id);
+				pstmt.setString(2, m_pw);
+				flag = pstmt.executeUpdate() > 0 ? true : false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!flag)
+					throw new Exception();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+			} finally {
+				closeAll(pstmt, conn);
+			}
+		}
+		return flag;
+	}
+
+	private String passwordCheck(Connection conn, String id) {
+		String password = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select m_password from member ");
+		sql.append("where m_id = ?");
+		try {
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				password = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt);
+		}
+
+		return password;
 	}
 
 	public PageVO listSearch(int currentPage, int target, String value) {
@@ -129,7 +143,7 @@ public class MemberDAO {
 		sql.append("from(select * from member where ");
 		switch (target) {
 		case 0:
-			sql.append("m_grade "); 
+			sql.append("m_grade ");
 			break;
 		case 1:
 			sql.append("m_id ");
@@ -238,11 +252,30 @@ public class MemberDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally { 
+		} finally {
 			closeAll(rs, pstmt, conn);
 		}
 
 		return dto;
 	}
-
+	public MemberDTO read(String id) {
+		MemberDTO dto = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
+		sql.append("where m_id = ?");
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto = getRs(rs);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt, conn);
+		}
+		return dto;
+	}
 }
