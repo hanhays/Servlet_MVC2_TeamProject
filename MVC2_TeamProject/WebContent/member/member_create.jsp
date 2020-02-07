@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="/EMC"  prefix="util"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,15 +84,85 @@
 
 	});
 </script>
+
+<style type="text/css">
+
+h1
+{
+	text-align : center; 
+}
+
+table
+{
+	margin : auto;
+	width : 400px;
+	
+}
+</style>
+
 </head>
 <body>
+<!-- enctype = "multipart/form-data" -->
 	<h1>회원 등록</h1>
-	<form action="member/create.do" method="post">
-		ID : <input required name="id">
-		<button>중복체크</button>
-		<br> NAME : <input required name="name"><br> AGE : <input
-			type="number" name="age"><br> <input type="submit"
-			value="등록">
+	<form action="create.do" method="post" >
+
+		<table>
+			<tr>
+				<td>ID :</td>
+				<td><input required name="id"><a><button>중복체크</button></a></td>
+			</tr>
+			<tr>
+				<td>PW :</td>
+				<td><input required name="password" type="password"></td>
+			</tr>
+
+
+			<tr>
+				<td>Name :</td>
+				<td><input required name="name"></td>
+			</tr>
+
+			<tr>
+				<td>Birth:</td>
+				<td><select name="year" id="year"> 
+						<c:forEach items="${util:getYear() }" var="year" >
+							<option value="${year }">${year }</option>
+						</c:forEach>
+				</select>-
+				 <select name="month" id="month">
+					<c:forEach items="${util:getMonth() }" var="month">
+						<option value="${month }">${month} </option>
+					</c:forEach>
+				</select>-
+				<select name="date" id="date">
+					<option value="00">00</option>
+				</select>
+				</td>
+			</tr>
+
+			<%-- 		Age : <input type="number" required name="m_age"><br>  --%>
+			<tr>
+				<td>Phone:</td>
+				<td><input required name="phone"></td>
+			</tr>
+
+			<tr>
+				<td>Email:</td>
+				<td><input required name="email"></td>
+			</tr>
+
+			<tr>
+				<td>Nickname:</td>
+				<td><input required name="nickname"><a><button>중복확인</button></a></td>
+			</tr>
+			<tr>
+				<td colspan = 4 style = "text-align:center">
+						<input type="submit" value="등록" ></td>
+				
+			
+			</tr>
+
+		</table>
 	</form>
 </body>
 </html>

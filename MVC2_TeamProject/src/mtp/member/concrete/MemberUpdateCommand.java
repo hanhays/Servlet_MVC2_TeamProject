@@ -34,7 +34,7 @@ public class MemberUpdateCommand implements MemberCommand {
 		
 		MemberDAO dao = new MemberDAO();
 		
-		MemberDTO dto = new MemberDTO(id, password, name, birth, age, phone, email, null, nickname, grade.charAt(0));
+		MemberDTO dto = new MemberDTO(id, password, name, birth, age, phone, email, nickname, grade.charAt(0));
 		dao.update(dto);
 		/*
 		 * String msg = dto != null ? "회원정보가 변경되었습니다." : "앗! 무엇인가 잘못되었습니다. 다시 시도해 주세요.";

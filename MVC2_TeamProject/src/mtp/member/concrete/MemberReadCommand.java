@@ -25,7 +25,7 @@ public class MemberReadCommand implements MemberCommand {
 		String id = sess_id != null ? sess_id.equals("admin") ? request.getParameter("id") : sess_id : null;
 		MemberDTO dto = null;
 		if (id != null) {
-			dto = new MemberDAO().read(id);
+			dto = new MemberDAO().read(id); 
 			request.setAttribute("dto",dto );
 		}
 		return new CommandAction(false, "member_read.jsp");
