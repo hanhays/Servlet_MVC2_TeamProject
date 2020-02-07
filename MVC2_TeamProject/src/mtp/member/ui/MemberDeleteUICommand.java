@@ -22,7 +22,7 @@ public class MemberDeleteUICommand implements MemberCommand {
 		HttpSession sess = request.getSession(false);
 		if(sess!=null) {
 			return new CommandAction(false , "member_delete.jsp" );
-		}
+		}System.out.println("세션만료");
 		return new CommandAction(true,"loginui.do");
 	}
 
