@@ -24,7 +24,7 @@ public class MemberDTO implements Serializable {
 	}
 
 	public MemberDTO(String m_id, String m_password, String m_name, String m_birth, int m_age, String m_phone,
-			String m_email, String m_nickname, char m_grade) {
+			String m_email, String m_nickname,char m_grade) {
 		this.m_id = m_id;
 		this.m_password = m_password;
 		this.m_name = m_name;
@@ -33,7 +33,6 @@ public class MemberDTO implements Serializable {
 		this.m_phone = m_phone;
 		this.m_email = m_email;
 		this.m_nickname = m_nickname;
-
 		this.m_grade = m_grade;
 	}
 

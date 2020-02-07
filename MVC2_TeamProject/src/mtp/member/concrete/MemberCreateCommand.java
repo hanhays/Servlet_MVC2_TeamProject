@@ -33,7 +33,7 @@ public class MemberCreateCommand implements MemberCommand {
 		StringBuffer m_birth = new StringBuffer();
 		m_birth.append(year);
 		m_birth.append("-");
-		m_birth.append(month);
+		m_birth.append(month); 
 		m_birth.append("-");
 		m_birth.append(date);
 		String m_phone = request.getParameter("phone");
