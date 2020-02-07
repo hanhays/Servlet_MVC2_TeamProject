@@ -129,6 +129,7 @@ public class MemberDAO {
 		sql.append("from(select * from member where ");
 		switch (target) {
 		case 0:
+			sql.append("m_grade ");
 			break;
 		case 1:
 			sql.append("m_id ");
@@ -189,7 +190,7 @@ public class MemberDAO {
 	}
 
 	public PageVO list(int currentPage) {
-		PageVO mp = new PageVO(currentPage);
+		PageVO pv = new PageVO(currentPage);
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
 		StringBuffer sql = new StringBuffer();
 		sql.append("select * from (");
@@ -200,26 +201,33 @@ public class MemberDAO {
 		try {
 			conn = dataFactory.getConnection();
 			int amount = getAmount(conn);
-			mp.setAmount(amount);
+			pv.setAmount(amount);
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(1, mp.getStartNum());
-			pstmt.setInt(2, mp.getEndNum());
+			pstmt.setInt(1, pv.getStartNum());
+			pstmt.setInt(2, pv.getEndNum());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				list.add(getRs(rs));
 			}
-			mp.setM_list(list);
+			pv.setM_list(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(rs, pstmt, conn);
 		}
-		return mp;
+		return pv;
 	}
 
 	private MemberDTO getRs(ResultSet rs) throws Exception {
-		return new MemberDTO(rs.getString(1), null, rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-				rs.getString(6), rs.getString(7), rs.getString(8).charAt(0));
+		return new MemberDTO(rs.getString(1), 
+							 null, 
+							 rs.getString(2), 
+							 rs.getString(3), 
+							 rs.getInt(4), 
+							 rs.getString(5),
+							 rs.getString(6), 
+							 rs.getString(7), 
+							 rs.getString(8).charAt(0));
 	}
 
 	public MemberDTO login(String id, String password) {

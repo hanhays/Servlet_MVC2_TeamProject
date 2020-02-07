@@ -10,6 +10,11 @@ b_step number(6) default 0,
 b_indent number(6) default 0
 ) 
 
+select * from 
+(select b_num, m_id, b_title, b_day, b_cnt, b_indent, rownum rnum from 
+(select * from board order by b_root desc, b_step asc)) 
+where rnum between ? and ?
+
 drop table board
 
 create table test(
@@ -38,5 +43,6 @@ commit
 
 
 select * from BOARD
+	
 
 drop table board

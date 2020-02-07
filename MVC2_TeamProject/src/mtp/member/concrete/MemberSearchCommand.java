@@ -90,6 +90,9 @@ public class MemberSearchCommand implements MemberCommand {
 		out.print("[");
 		out.print(msg);
 		out.print("]");
+		
+		request.setAttribute("s_pv", pv);
+		
 		return null;
 	}
 }

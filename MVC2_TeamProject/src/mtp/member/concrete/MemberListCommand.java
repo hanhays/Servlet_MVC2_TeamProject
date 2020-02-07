@@ -23,9 +23,10 @@ public class MemberListCommand implements MemberCommand {
 		int currentPage = 1;
 		if(currentPage_ != null) currentPage = Integer.parseInt(currentPage_);
 		
-		PageVO pv = new MemberDAO().list(currentPage);
-		request.setAttribute("list", pv.getM_list());
-		request.setAttribute("mp", pv);
+		PageVO m_pv = new MemberDAO().list(currentPage);
+		
+		request.setAttribute("list", m_pv.getM_list());
+		request.setAttribute("l_pv", m_pv);
 		
 		return new CommandAction(false, "member_list.jsp"); 
 	}

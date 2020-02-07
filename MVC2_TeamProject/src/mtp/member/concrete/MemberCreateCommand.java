@@ -30,9 +30,6 @@ public class MemberCreateCommand implements MemberCommand {
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
 		String date = request.getParameter("date");
-		System.out.println(year);
-		System.out.println(month);
-		System.out.println(date); 
 		StringBuffer m_birth = new StringBuffer();
 		m_birth.append(year);
 		m_birth.append("-");
@@ -52,7 +49,7 @@ public class MemberCreateCommand implements MemberCommand {
 		if(flag) {
 			return new CommandAction(true, "/MVC2_TeamProject/");
 		}
-		return new CommandAction(true,"");
+		return new CommandAction(true,"fail.do");
 	}
 
 }
