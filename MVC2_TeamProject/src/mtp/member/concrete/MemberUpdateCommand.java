@@ -25,7 +25,6 @@ public class MemberUpdateCommand implements MemberCommand {
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		String nickname = request.getParameter("nickname");
-		String img = request.getParameter("img");
 		String grade = request.getParameter("grade");
 		
 		int age = -1;
@@ -35,14 +34,14 @@ public class MemberUpdateCommand implements MemberCommand {
 		
 		MemberDAO dao = new MemberDAO();
 		
-		MemberDTO dto = new MemberDTO(id, password, name, birth, age, phone, email, nickname, img, grade.charAt(0));
+		MemberDTO dto = new MemberDTO(id, password, name, birth, age, phone, email, null, nickname, grade.charAt(0));
 		dao.update(dto);
 		/*
 		 * String msg = dto != null ? "회원정보가 변경되었습니다." : "앗! 무엇인가 잘못되었습니다. 다시 시도해 주세요.";
 		 * request.setAttribute("msg", msg);
 		 */
 
-		return new CommandAction(true, "read.do?m_id="+id);
+		return new CommandAction(true, "read.do");
 	}
 
 }
