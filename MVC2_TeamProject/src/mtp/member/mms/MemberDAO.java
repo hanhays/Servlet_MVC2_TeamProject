@@ -46,36 +46,65 @@ public class MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			System.gc();
 		}
 	}
 
-	public boolean create(MemberDTO dto) {
+	public MemberDTO updateui(String id) {
+		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
-		boolean flag = false;
-		sql.append("insert into member");
-		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
-		sql.append("values(?,?,?,?,?,?,?,?)");
-//		sql에 m_img 이미지 업로드 
+		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
+		sql.append("where m_id = ?");
+		
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, dto.getM_id());
-			pstmt.setString(2, dto.getM_password());
-			pstmt.setString(3, dto.getM_name());
-			pstmt.setString(4, dto.getM_birth());
-			pstmt.setInt(5, dto.getM_age());
-			pstmt.setString(6, dto.getM_phone());
-			pstmt.setString(7, dto.getM_email());
-			pstmt.setString(8, dto.getM_nickname());
-
-			int i = pstmt.executeUpdate();
-			flag = i>0? true: false;
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				dto = getRs(rs);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeAll(rs, pstmt, conn);
+		}
+		
+		return dto;
+	}
+
+	public void update(MemberDTO dto) {
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("update member set ");
+		sql.append("m_password = ?, m_name = ?, m_phone = ?, m_email = ?, m_nickname =? ");
+		sql.append("where m_id = ?");
+		
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			conn.setAutoCommit(false);
+			
+			pstmt.setString(1, dto.getM_password());
+			pstmt.setString(2, dto.getM_name());
+			pstmt.setString(3, dto.getM_phone());
+			pstmt.setString(4, dto.getM_email());
+			pstmt.setString(5, dto.getM_nickname());
+			pstmt.setString(6, dto.getM_id());
+
+			pstmt.executeUpdate();
+			conn.commit();
+			// 3항 연산자로 update 여부 return 할까말까
+			
+			
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(pstmt, conn);
 		}
-		return flag;
 	}
 
 	public MemberDTO read(String id) {
@@ -99,17 +128,23 @@ public class MemberDAO {
 		return dto;
 	}
 
-	public boolean delete(String m_id, String m_pw) {
+	public boolean create(MemberDTO dto) {
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
-		sql.append("delete from Member");
-		sql.append("where m_id=? and m_password=?");
-
+		sql.append("insert into member");
+		sql.append("(m_id, m_password, m_name, m_birth, m_age, m_phone, m_email, m_nickname) ");
+		sql.append("values(?,?,?,?,?,?,?,?)");
 		try {
 			conn = dataFactory.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, m_id);
-			pstmt.setString(2, m_pw);
+			pstmt =conn.prepareStatement(sql.toString());
+			pstmt.setString(1, dto.getM_id());
+			pstmt.setString(2, dto.getM_password());
+			pstmt.setString(3, dto.getM_name());
+			pstmt.setString(4, dto.getM_birth());
+			pstmt.setInt(5, dto.getM_age());
+			pstmt.setString(6, dto.getM_phone());
+			pstmt.setString(7, dto.getM_email());
+			pstmt.setString(8, dto.getM_nickname());
 			flag = pstmt.executeUpdate() > 0 ? true : false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,6 +152,61 @@ public class MemberDAO {
 			closeAll(pstmt, conn);
 		}
 		return flag;
+	}
+	public boolean delete(String m_id, String m_pw) throws Exception {
+		boolean flag = false;
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from Member ");
+		sql.append("where m_id=? and m_password=?");
+		try {
+			conn = dataFactory.getConnection();
+
+			conn.setAutoCommit(false);
+
+			String password = passwordCheck(conn, m_id);
+
+			pstmt = conn.prepareStatement(sql.toString());
+
+			if (password != null ? password.equals(m_pw) : false) {
+				pstmt.setString(1, m_id);
+				pstmt.setString(2, m_pw);
+				flag = pstmt.executeUpdate() > 0 ? true : false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!flag)
+					throw new Exception();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+			} finally {
+				closeAll(pstmt, conn);
+			}
+		}
+		return flag;
+	}
+
+	private String passwordCheck(Connection conn, String id) {
+		String password = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select m_password from member ");
+		sql.append("where m_id = ?");
+		try {
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				password = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt);
+		}
+
+		return password;
 	}
 
 	public PageVO listSearch(int currentPage, int target, String value) {
@@ -129,6 +219,7 @@ public class MemberDAO {
 		sql.append("from(select * from member where ");
 		switch (target) {
 		case 0:
+			sql.append("m_grade ");
 			break;
 		case 1:
 			sql.append("m_id ");
@@ -189,7 +280,7 @@ public class MemberDAO {
 	}
 
 	public PageVO list(int currentPage) {
-		PageVO mp = new PageVO(currentPage);
+		PageVO pv = new PageVO(currentPage);
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
 		StringBuffer sql = new StringBuffer();
 		sql.append("select * from (");
@@ -200,26 +291,33 @@ public class MemberDAO {
 		try {
 			conn = dataFactory.getConnection();
 			int amount = getAmount(conn);
-			mp.setAmount(amount);
+			pv.setAmount(amount);
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(1, mp.getStartNum());
-			pstmt.setInt(2, mp.getEndNum());
+			pstmt.setInt(1, pv.getStartNum());
+			pstmt.setInt(2, pv.getEndNum());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				list.add(getRs(rs));
 			}
-			mp.setM_list(list);
+			pv.setM_list(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeAll(rs, pstmt, conn);
 		}
-		return mp;
+		return pv;
 	}
 
 	private MemberDTO getRs(ResultSet rs) throws Exception {
-		return new MemberDTO(rs.getString(1), null, rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-				rs.getString(6), rs.getString(7), rs.getString(8).charAt(0));
+		return new MemberDTO(rs.getString(1), 
+							 null, 
+							 rs.getString(2), 
+							 rs.getString(3), 
+							 rs.getInt(4), 
+							 rs.getString(5),
+							 rs.getString(6), 
+							 rs.getString(7), 
+							 rs.getString(8).charAt(0));
 	}
 
 	public MemberDTO login(String id, String password) {
@@ -243,5 +341,4 @@ public class MemberDAO {
 
 		return dto;
 	}
-
 }

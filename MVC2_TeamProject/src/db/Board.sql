@@ -10,13 +10,26 @@ b_step number(6) default 0,
 b_indent number(6) default 0
 ) 
 
+select * from 
+(select b_num, m_id, b_title, b_day, b_cnt, b_indent, rownum rnum from 
+(select * from board order by b_root desc, b_step asc)) 
+where rnum between ? and ?
+
 drop table board
 
 create table test(
 num number(2) primary key
 )
 
+insert into board(
+b_num ,m_id, b_title, b_content)
+values((select nvl(max(b_num),0)+1 from board),'admin','공지','공지라네~')
+insert into board(b_num,m_id, b_title, b_content) values((select nvl(max(b_num),0)+1 from board),'admin','공지','공지라네~')
+
 insert into test(num) values((select nvl(max(num),0)+1 from test));
+
+
+
 select * from member
 select * from board
 
@@ -38,5 +51,6 @@ commit
 
 
 select * from BOARD
+	
 
 drop table board

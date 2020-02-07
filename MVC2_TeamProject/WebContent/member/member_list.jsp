@@ -41,7 +41,9 @@
 						str += '<tr>';
 						str += "<td><a href='read.do?id="+ arr[i].m_id +"'>"+arr[i].m_id +"</a></td>";
 						str += '<td>' + arr[i].m_name + '</td>';
+						
 						str += '<td>' + arr[i].m_birth + '</td>';
+						
 						str += '<td>' + arr[i].m_age + '</td>';
 						str += '<td>' + arr[i].m_phone + '</td>';
 						str += '<td>' + arr[i].m_email + '</td>';
@@ -52,7 +54,7 @@
 					if(str!=''){
 						$("#test").html(str);
 						}else{
-							str+="<td colspan='8'>조회할 아이디가 없습니다.</td>";
+							str+="<td colspan='10'>조회하신 정보가 유효하지 않습니다.</td>";
 							$("#test").html(str);
 						}
 				}
@@ -76,7 +78,9 @@
 			<option value="5">이메일</option>
 		</select> <input type="text" name="content" />
 		<button id="ajax_click">검색</button>
+		
 	<hr>
+	
 	<table border="1">
 		<thead>
 			<tr>
@@ -90,9 +94,10 @@
 				<th>등급</th>
 			</tr>
 		</thead> 
+		
 		<tbody id="test">
 			<c:choose>
-				<c:when test="${not empty list }"> 
+			<c:when test="${not empty list}"> 
 				<c:forEach items="${list }" var="dto">
 					<tr>
 						<td><a href="read.do?id=${dto.m_id }">${dto.m_id }</a></td>
@@ -112,11 +117,22 @@
 						<td>${dto.m_grade }</td>
 					</tr>
 				</c:forEach>
-				</c:when>
+			</c:when> 
 			</c:choose>
 		</tbody>
-	</table>
-	<br>
-	<jsp:include page="../page/paging.jsp"/> 
+		</table>
+		
+		<br>
+		<c:choose>
+			<c:when test="${not empty pv }">
+				<jsp:include page="../page/member_search_paging.jsp"/>
+			</c:when>
+			
+			<c:otherwise>
+				<jsp:include page="../page/member_list_paging.jsp"/>
+			</c:otherwise>
+		</c:choose>
+		<br>
+	
 </body> 
 </html>

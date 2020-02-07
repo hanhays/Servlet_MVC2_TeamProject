@@ -13,7 +13,7 @@
 		<a href="member/logout.do">로그아웃</a>
 		<c:choose>
 			<c:when test="${grade eq 97}">
-				<a>글쓰기</a>
+				<a href="board/createui.do">글쓰기</a>
 				<a href="member/read.do">내정보</a>
 			</c:when> 
 			<c:otherwise>

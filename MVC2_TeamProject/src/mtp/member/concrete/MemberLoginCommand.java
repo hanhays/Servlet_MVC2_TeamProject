@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import mtp.member.interfaces.MemberCommand;
 import mtp.member.mms.MemberDAO;
@@ -24,7 +25,9 @@ public class MemberLoginCommand implements MemberCommand {
 		String password= request.getParameter("password");
 		MemberDTO dto=new MemberDAO().login(id,password);
 		if(dto !=null) {
-			request.getSession().setAttribute("dto",dto);
+			HttpSession sess= request.getSession();
+			sess.setAttribute("dto",dto);
+			sess.setMaxInactiveInterval(30);
 			return new CommandAction(true,"/MVC2_TeamProject/");
 		}
 		request.setAttribute("id", id);

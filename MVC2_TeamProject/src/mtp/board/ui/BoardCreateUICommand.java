@@ -1,4 +1,4 @@
-package mtp.member.ui;
+package mtp.board.ui;
 
 import java.io.IOException;
 
@@ -7,18 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mtp.member.interfaces.MemberCommand;
-import mtp.member.mms.MemberDAO;
-import mtp.member.mms.MemberDTO;
 import mtp.view.forward.CommandAction;
 
-public class MemberUpdateUICommand implements MemberCommand {
+public class BoardCreateUICommand implements MemberCommand {
+
+	public BoardCreateUICommand() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String url)
 			throws IOException, ServletException {
-		String id =((MemberDTO)request.getSession(false).getAttribute("dto")).getM_id();
-		request.setAttribute("dto", new MemberDAO().updateui(id));
-		return new CommandAction(false, "member_update.jsp");
+		if(request.getSession(false)!=null) {
+			return new CommandAction(false,"board_create.jsp");
+		}
+		return new CommandAction(true , "../member/loginui.do");
 	}
 
 }
