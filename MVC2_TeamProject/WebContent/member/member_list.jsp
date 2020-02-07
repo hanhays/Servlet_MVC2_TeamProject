@@ -41,7 +41,9 @@
 						str += '<tr>';
 						str += "<td><a href='read.do?id="+ arr[i].m_id +"'>"+arr[i].m_id +"</a></td>";
 						str += '<td>' + arr[i].m_name + '</td>';
+						
 						str += '<td>' + arr[i].m_birth + '</td>';
+						
 						str += '<td>' + arr[i].m_age + '</td>';
 						str += '<td>' + arr[i].m_phone + '</td>';
 						str += '<td>' + arr[i].m_email + '</td>';

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mtp.member.interfaces.MemberCommand;
+import mtp.member.mms.MemberDAO;
+import mtp.member.mms.MemberDTO;
 import mtp.view.forward.CommandAction;
 
 public class MemberUpdateUICommand implements MemberCommand {
@@ -14,8 +16,9 @@ public class MemberUpdateUICommand implements MemberCommand {
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String url)
 			throws IOException, ServletException {
-		
-		return new CommandAction(false,"member_update.jsp");
+		String id =((MemberDTO)request.getSession(false).getAttribute("dto")).getM_id();
+		request.setAttribute("dto", new MemberDAO().updateui(id));
+		return new CommandAction(false, "member_update.jsp");
 	}
 
 }
