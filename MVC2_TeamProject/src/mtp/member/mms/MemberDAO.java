@@ -47,9 +47,6 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(rs!=null)rs = null;
-			if(pstmt!=null)pstmt = null; 
-			if(conn!=null)conn = null; 
 			System.gc();
 		}
 	} 
@@ -87,6 +84,7 @@ public class MemberDAO {
 		
 		return flag ;
 	}
+	
 	public MemberDTO read(String id) { 
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();

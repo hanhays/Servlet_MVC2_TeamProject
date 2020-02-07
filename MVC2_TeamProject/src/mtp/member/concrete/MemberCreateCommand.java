@@ -28,10 +28,7 @@ public class MemberCreateCommand implements MemberCommand {
 		String m_name = request.getParameter("name");
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
-		String date = request.getParameter("date");
-		System.out.println(year);
-		System.out.println(month);
-		System.out.println(date); 
+		String date = request.getParameter("date"); 
 		StringBuffer m_birth = new StringBuffer();
 		m_birth.append(year);
 		m_birth.append("-");
@@ -43,7 +40,9 @@ public class MemberCreateCommand implements MemberCommand {
 		String m_nickname = request.getParameter("nickname");
 //		String m_img = request.getParameter("img");
 //		System.out.println(m_img);
+		
 		int m_age = new MemberUtil().getAge(year);
+		
 		MemberDAO dao = new MemberDAO();
 		dao.create(new MemberDTO(m_id, m_password, m_name, m_birth.toString(), m_age, m_phone, m_email, m_nickname, 'a'));
 
@@ -51,7 +50,7 @@ public class MemberCreateCommand implements MemberCommand {
 			e.printStackTrace();
 		}
 		
-		return new CommandAction(true, "list.do");
+		return new CommandAction(true, "loginui.do");
 
 	}
 

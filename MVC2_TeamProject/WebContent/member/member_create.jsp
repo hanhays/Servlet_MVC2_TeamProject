@@ -69,7 +69,7 @@
 			var id = $("input[name='id']").val();
 			$.ajax({
 				type : 'get',
-				url : 'member/checkid.do',
+				url : 'checkid.do',
 				data : {
 					id : id
 				},
@@ -157,10 +157,10 @@ table
 			</tr>
 
 
-			<tr>
+	<!-- 		<tr>
 				<td>Image:</td>
 				<td><input type="file" name="img"></td>
-			</tr>
+			</tr> -->
 			<tr>
 				<td colspan = 4 style = "text-align:center">
 						<input type="submit" value="µî·Ï" ></td>

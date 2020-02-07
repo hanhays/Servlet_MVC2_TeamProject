@@ -24,11 +24,7 @@ public class MemberUtil {
 //	}
 
 	public int getAge(String year) throws Exception {
-		int age = Calendar.getInstance().get(Calendar.YEAR) - strCastingint(year);//만나이
-//		if (strCastingint(month) < 3) {
-//			return age + 1;
-//		} 빠른연생 구하는 로직
-		return age + 1;
+		return (Calendar.getInstance().get(Calendar.YEAR) - strCastingint(year)) + 1;
 	}
 
 	public List<String> getYear() throws Exception {
