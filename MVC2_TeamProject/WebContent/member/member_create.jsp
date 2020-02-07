@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="/EMC"  prefix="util"%> 
+<%@ taglib uri="/EMC" prefix="util"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +69,7 @@
 			var id = $("input[name='id']").val();
 			$.ajax({
 				type : 'get',
-				url : 'member/checkid.do',
+				url : 'checkid.do',
 				data : {
 					id : id
 				},
@@ -85,36 +85,66 @@
 	});
 </script>
 
-<style type="text/css">
+<script type="text/javascript">
 
-h1
-{
-	text-align : center; 
+	$(function() {
+		$("#alert-success").hide();
+		$("#alert-danger").hide();
+		$("input").keyup(function() {
+			var pwd1 = $("#pwd1").val();
+			var pwd2 = $("#pwd2").val();
+			if (pwd1 != "" || pwd2 != "") {
+				if (pwd1 == pwd2) {
+					$("#alert-success").show();
+					$("#alert-danger").hide();
+					$("#submit").removeAttr("disabled");
+				} else {
+					$("#alert-success").hide();
+					$("#alert-danger").show();
+					$("#submit").attr("disabled", "disabled");
+				}
+			}
+		});
+	});
+</script>
+
+<style type="text/css">
+h1 {
+	text-align: center;
 }
 
-table
-{
-	margin : auto;
-	width : 400px;
-	
+table {
+	margin: auto;
+	width: 400px;
 }
 </style>
 
 </head>
 <body>
-<!-- enctype = "multipart/form-data" -->
+	<!-- enctype = "multipart/form-data" -->
 	<h1>회원 등록</h1>
-	<form action="create.do" method="post" >
+	<form action="create.do" method="post">
 
 		<table>
 			<tr>
 				<td>ID :</td>
 				<td><input required name="id"><a><button>중복체크</button></a></td>
 			</tr>
+			
 			<tr>
 				<td>PW :</td>
-				<td><input required name="password" type="password"></td>
+				<td><input required name="password" type="password" id="pwd1" ></td>
 			</tr>
+
+			<tr>
+				<td>PW확인 :</td>
+				<td><input required name="password2" type="password" id="pwd2" ></td>
+			</tr>
+			<tr><td colspan=4>
+				<div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div> 
+				<div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
+			</td></tr>
+
 
 
 			<tr>
@@ -124,20 +154,17 @@ table
 
 			<tr>
 				<td>Birth:</td>
-				<td><select name="year" id="year"> 
-						<c:forEach items="${util:getYear() }" var="year" >
+				<td><select name="year" id="year">
+						<c:forEach items="${util:getYear() }" var="year">
 							<option value="${year }">${year }</option>
 						</c:forEach>
-				</select>-
-				 <select name="month" id="month">
-					<c:forEach items="${util:getMonth() }" var="month">
-						<option value="${month }">${month} </option>
-					</c:forEach>
-				</select>-
-				<select name="date" id="date">
-					<option value="00">00</option>
-				</select>
-				</td>
+				</select>- <select name="month" id="month">
+						<c:forEach items="${util:getMonth() }" var="month">
+							<option value="${month }">${month}</option>
+						</c:forEach>
+				</select>- <select name="date" id="date">
+						<option value="00">00</option>
+				</select></td>
 			</tr>
 
 			<%-- 		Age : <input type="number" required name="m_age"><br>  --%>
@@ -156,13 +183,17 @@ table
 				<td><input required name="nickname"><a><button>중복확인</button></a></td>
 			</tr>
 			<tr>
-				<td colspan = 4 style = "text-align:center">
-						<input type="submit" value="등록" ></td>
-				
-			
+				<td colspan=4 style="text-align: center"><input type="submit"
+					value="등록"></td>
+
+
 			</tr>
 
 		</table>
+
+				<span id="alert-success" style="display: none;">비밀번호가 일치합니다.</span> 
+				<span id="alert-danger" style="display: none; color: #d92742; font-weight: bold;">비밀번호가 일치하지 않습니다.</span>
+	
 	</form>
 </body>
 </html>
