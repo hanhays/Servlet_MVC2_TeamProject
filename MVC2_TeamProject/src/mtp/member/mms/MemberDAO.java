@@ -129,6 +129,7 @@ public class MemberDAO {
 		sql.append("from(select * from member where ");
 		switch (target) {
 		case 0:
+			sql.append("m_grade "); 
 			break;
 		case 1:
 			sql.append("m_id ");
@@ -237,7 +238,7 @@ public class MemberDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} finally { 
 			closeAll(rs, pstmt, conn);
 		}
 
