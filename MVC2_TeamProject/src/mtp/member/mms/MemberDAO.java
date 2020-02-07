@@ -46,11 +46,6 @@ public class MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-<<<<<<< HEAD
-		} finally {
-			System.gc();
-=======
->>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 		}
 	}
 
@@ -82,18 +77,8 @@ public class MemberDAO {
 		}
 		return flag;
 	}
-<<<<<<< HEAD
-	private boolean fileupdate(Connection conn) {
-		boolean flag = false;
-		
-		return flag ;
-	}
-	
-	public MemberDTO read(String id) { 
-=======
 
 	public MemberDTO read(String id) {
->>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append("select m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");

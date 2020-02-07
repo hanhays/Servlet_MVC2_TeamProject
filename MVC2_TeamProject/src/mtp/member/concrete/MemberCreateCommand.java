@@ -29,7 +29,10 @@ public class MemberCreateCommand implements MemberCommand {
 		String m_name = request.getParameter("name");
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
-		String date = request.getParameter("date"); 
+		String date = request.getParameter("date");
+		System.out.println(year);
+		System.out.println(month);
+		System.out.println(date); 
 		StringBuffer m_birth = new StringBuffer();
 		m_birth.append(year);
 		m_birth.append("-");
@@ -39,30 +42,17 @@ public class MemberCreateCommand implements MemberCommand {
 		String m_phone = request.getParameter("phone");
 		String m_email = request.getParameter("email");
 		String m_nickname = request.getParameter("nickname");
-<<<<<<< HEAD
-//		String m_img = request.getParameter("img");
-//		System.out.println(m_img);
-		
-=======
->>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 		int m_age = new MemberUtil().getAge(year);
-		
 		MemberDAO dao = new MemberDAO();
 		flag = dao.create(new MemberDTO(m_id, m_password, m_name, m_birth.toString(), m_age, m_phone, m_email, m_nickname, 'a'));
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-<<<<<<< HEAD
-		
-		return new CommandAction(true, "loginui.do");
-
-=======
 		if(flag) {
 			return new CommandAction(true, "/MVC2_TeamProject/");
 		}
 		return new CommandAction(true,"");
->>>>>>> branch 'develop' of https://github.com/YunWonYong/Servlet_MVC2_TeamProject.git
 	}
 
 }
