@@ -18,13 +18,10 @@ public class BoardDTO implements Serializable {
 	private int b_root;
 	private int b_step;
 	private int b_indent;
-	
-	public BoardDTO() {
-	}
+
 
 	public BoardDTO(int b_num, String m_id, String b_title, String b_content, String b_day, int b_cnt, int b_root,
 			int b_step, int b_indent) {
-		super();
 		this.b_num = b_num;
 		this.m_id = m_id;
 		this.b_title = b_title;

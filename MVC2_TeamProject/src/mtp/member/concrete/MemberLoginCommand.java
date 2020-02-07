@@ -27,6 +27,7 @@ public class MemberLoginCommand implements MemberCommand {
 		if(dto !=null) {
 			HttpSession sess= request.getSession();
 			sess.setAttribute("dto",dto);
+			sess.setMaxInactiveInterval(30);
 			return new CommandAction(true,"/MVC2_TeamProject/");
 		}
 		request.setAttribute("id", id);

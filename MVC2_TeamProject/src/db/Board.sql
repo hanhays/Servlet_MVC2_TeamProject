@@ -21,7 +21,15 @@ create table test(
 num number(2) primary key
 )
 
+insert into board(
+b_num ,m_id, b_title, b_content)
+values((select nvl(max(b_num),0)+1 from board),'admin','공지','공지라네~')
+insert into board(b_num,m_id, b_title, b_content) values((select nvl(max(b_num),0)+1 from board),'admin','공지','공지라네~')
+
 insert into test(num) values((select nvl(max(num),0)+1 from test));
+
+
+
 select * from member
 select * from board
 
