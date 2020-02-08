@@ -39,7 +39,7 @@ select * from member
 
 values('m001','1234','김씨',29,'010-5453-2487','ywyi1992@naver.com','첫회원임',sysdate)
 
- 
+ select m_id, m_name, m_birth, m_age ,m_phone, m_email, m_nickname, m_grade from member where m_grade like '%a%'
 
 select * from member
 select * from member where m_id = 'admin'
@@ -56,6 +56,8 @@ select * from
 where rnum between 1 and 10
 
 select * from member 
+
+select m_id, m_name, m_birth, m_age ,m_phone, m_email, m_nickname, m_grade from member where m_grade like '%a%'
 
 select count(*) from member
 

@@ -14,6 +14,34 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript">
+		var listRequest = new XMLHttpRequest(); 
+		function listFunction() {
+			listRequest.open("Post", "../list.do?m_id="+encodeURIcomponent(document.getElementById("m_id").value), true);
+			listRequest.onreadystatechange = listProcess;
+			listRequest.send(null);
+		}
+		function listProcess() {
+			var table = document.getElementById("ajaxTable");
+			table.innerHTML = "";
+			if(listRequest.readyState == 4 && listRequest.staus == 200){
+				var object = eval('('+listRequest.responseText+')');
+				var result = object.result;
+				for (var i = 0; i <result.length; i++){
+					var row = table.insertRow(0);
+					for (var j = 0; j< result[i].length; j++){
+						var cell = row.insertCell(j);
+						cell.innerHTML = result[i][j].value;
+					}
+				}
+			}
+		}
+		window.onload = function() {
+			listFunction();
+		}
+	</script>
+	
 </head>
 
 <body>
@@ -21,7 +49,37 @@
 <hr>
 <h1>게시판</h1>
 <br>
-<table border="1">
+
+<br>
+	<div class="container">
+	
+		<div class="form-group row pull-right">
+			<div class="col-xs-8">
+				<input class="form-control" id="m_id" onkeyup="listFunction()" type="text" size="20">
+			</div>
+			
+			<div class="col-xs-2">
+				<button class="btn btn-primary" onclick="listFunction();" type="button">검색</button>
+			</div>
+		</div>
+		
+		<table class="table" style="text-align: center; border: 1px solid; #dddddd">
+			<thead>
+				<tr>
+					<th style="background-color: #fafafa; text-align: center;">글번호</th>
+					<th style="background-color: #fafafa; text-align: center;">글제목</th>
+					<th style="background-color: #fafafa; text-align: center;">글쓴이</th>
+					<th style="background-color: #fafafa; text-align: center;">쓴날짜</th>
+					<th style="background-color: #fafafa; text-align: center;">조횟수</th>
+				</tr>
+			</thead>
+			<tbody id="ajaxTable"></tbody>
+		</table>
+	</div>
+	
+	
+
+<%-- <table border="1">
 
 	<thead>
 		<tr>
@@ -55,7 +113,7 @@
 	</c:forEach>
 	</tbody>
 
-</table>
+</table> --%>
 <br>
 
 
