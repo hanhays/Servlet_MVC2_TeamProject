@@ -42,7 +42,6 @@ public class MemberCreateCommand implements MemberCommand {
 		int m_age = new MemberUtil().getAge(year);
 		MemberDAO dao = new MemberDAO();
 		flag = dao.create(new MemberDTO(m_id, m_password, m_name, m_birth.toString(), m_age, m_phone, m_email, m_nickname, 'a'));
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

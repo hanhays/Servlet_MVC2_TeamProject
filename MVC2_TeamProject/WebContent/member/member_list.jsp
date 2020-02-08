@@ -17,58 +17,94 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-	$(function() {
-		$("#ajax_click").click(function(/* event */) {
-							//event.preventDefault(); 	
-							var category = $("select[name='category']").val();
-							var content = $("input[name='content']");
-							$.ajax({
-									type : 'get',
-									url : 'search.do',
-									data : {
-											category : category,
-											content :content.serialize().replace(/%/g,'%25'),
-											currentPage : 1
-											
-										},
-								dataType : 'text',
-								success : function(result) {
-											var arr = JSON.parse(result);
-											var str = '';
-											var birth ='';
-											$.each(arr,function(i) {
-													birth = arr[i].m_birth.split(' ')[0];
-													str += '<tr>';
-													str += "<td><a href='read.do?id="+ arr[i].m_id+ "'>"+ arr[i].m_id+ "</a></td>";
-													str += '<td>'+ arr[i].m_name+ '</td>';
-													str += '<td>'+ birth+ '</td>';
-													str += '<td>'
-															+ arr[i].m_age
-															+ '</td>';
-													str += '<td>'
-															+ arr[i].m_phone
-															+ '</td>';
-													str += '<td>'
-															+ arr[i].m_email
-															+ '</td>';
-													str += '<td>'
-															+ arr[i].m_nickname
-															+ '</td>';
-													str += '<td>'
-															+ arr[i].m_grade
-															+ '</td>';
-													str += '</tr>';
-															});
-											if (str != '') {
-												$("#ajaxTable").html(str);
-											} else {
-												str += "<td colspan='10'>조회하신 정보가 유효하지 않습니다.</td>";
-												$("#ajaxTable").html(str);
-											}
-										}
-									});
-						});
-	});
+	var currentPage = null;
+	function goAJAX(){
+		var category = $("select[name='category']").val();
+		var content = $("input[name='content']");
+		console.log(currentPage);
+		 if(currentPage == null){
+			currentPage = 1;	
+		} 
+		console.log(currentPage);
+		$.ajax({
+				type : 'get',
+				url : 'search.do',
+				data : {
+						currentPage : currentPage,
+						category : category,
+						content :content.serialize().replace(/%/g,'%25')
+					},
+			dataType : 'text',
+			success : function(result) { 
+						var arr = JSON.parse(result);
+						console.log(arr);
+						var str = '';
+						var birth ='';
+						$.each(arr[0],function(i) {
+								birth = arr[0][i].m_birth.split(' ')[0];
+								str += '<tr>';
+								str += "<td><a href='read.do?id="+ arr[0][i].m_id+ "'>"+ arr[0][i].m_id+ "</a></td>";
+								str += '<td>'+ arr[0][i].m_name+ '</td>';
+								str += '<td>'+ birth+ '</td>';
+								str += '<td>'
+										+ arr[0][i].m_age
+										+ '</td>';
+								str += '<td>'
+										+ arr[0][i].m_phone
+										+ '</td>';
+								str += '<td>'
+										+ arr[0][i].m_email
+										+ '</td>';
+								str += '<td>'
+										+ arr[0][i].m_nickname
+										+ '</td>';
+								str += '<td>'
+										+ arr[0][i].m_grade
+										+ '</td>';
+								str += '</tr>';
+										});
+						if (str != '') {
+							$("#ajaxTable").html(str);
+						} else {
+							str += "<td colspan='10'>조회하신 정보가 유효하지 않습니다.</td>";
+							$("#ajaxTable").html(str);
+						}
+						var start = arr[1][0].beginPageNum;
+						var end = arr[1][0].stopPageNum;
+						var currentPage = arr[1][0].currentPage;
+						var totalPage = arr[1][0].totalPage;
+						var startNum = arr[1][0].startNum;
+						var endNum = arr[1][0].endNum;
+						var amount = arr[1][0].amount;
+						var gogo =String((currentPage/2)+1);
+						gogo = gogo.split(".")[0];
+						
+						console.log(gogo);
+						$("#paging").html(" ");
+						var msg="";
+						msg+="<table>";
+							msg+="<tr>";
+						for(i=gogo; i<=end; i++){
+							msg+="<th>";
+							if(i==currentPage){
+							msg+="<strong onclick='getCurrentPage("+i+")' style='color:red;'>"+i+"   </strong>   ";
+							}else{
+								msg+="<strong onclick='getCurrentPage("+i+")' style='color:black;'>"+i+"   </strong>   ";
+							}
+							msg+="</th>";
+							
+						}
+						msg+="</table>";
+						msg+="</tr>";
+						$("#paging").append(msg);
+					}
+				});
+					
+	}
+	function getCurrentPage(currentPages){ 
+		currentPage=currentPages;
+		goAJAX();
+	}
 </script>
 <!--  <script type="text/javascript">
 	var searchRequest = new XMLHttpRequest();
@@ -105,7 +141,6 @@
 	<hr>
 	<h1>관리자페이지</h1>
 	<hr>
-
 	<div class="container">
 		<div class="form-group row">
 			<div class="col-xs-5">
@@ -123,7 +158,7 @@
 				<input  class="form-control" type="text" name="content" />
 			</div>
 			<div class="col-xs-2">
-				<button class="btn btn-primary" id="ajax_click">검색</button>
+				<button class="btn btn-primary" onclick="goAJAX()" >검색</button>
 			</div>
 
 			<!-- 		<div class="col-xs-5">
@@ -186,6 +221,9 @@
 				</c:choose>
 			</tbody>
 		</table>
+	</div>
+	<div id="paging">
+		<jsp:include page="../page/paging.jsp"/> 
 	</div>
 	<!-- 	
 		<select name="category">
@@ -251,11 +289,12 @@
 				<jsp:include page="../page/member_search_paging.jsp"/>
 			</c:otherwise>
 		</c:choose>
-		<br> --%> 
-		<div class="table"
+		<br> --%>
+		 
+<%-- 		<div class="table"
 			style="text-align: center; border: 1px solid; #dddddd">
 		<jsp:include page="../page/paging.jsp"/>
 		</div>
-
+ --%>
 </body>
 </html>

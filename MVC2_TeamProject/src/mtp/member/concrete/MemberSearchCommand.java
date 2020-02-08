@@ -30,10 +30,40 @@ public class MemberSearchCommand implements MemberCommand {
 		System.out.println(content);
 		content = content.split("content=")[1];
 		PrintWriter out = response.getWriter();
-		String msg ="";
 		PageVO pv = new MemberDAO().listSearch(currentPage, target, content);
-
-		for (MemberDTO x : pv.getM_list()) {
+		out.print("[");
+		out.print("[");
+		out.print(getListParsingJSON(pv.getM_list()));
+		out.print("]");
+		out.print(",[");
+		out.print(getPagingJSON(pv));
+		out.print("]");
+		out.print("]");
+		return null;
+//		response.getWriter().write(getJSON(target, content));
+	}
+	private String getPagingJSON(PageVO pv) {
+		String msg = "{";
+		msg+="\"beginPageNum\":";
+		msg+=pv.getBeginPageNum();
+		msg+=",\"stopPageNum\":";
+		msg+=pv.getStopPageNum();
+		msg+=",\"currentPage\":";
+		msg+=pv.getCurrentPage();
+		msg+=",\"totalPage\":";
+		msg+=pv.getTotalPage();
+		msg+=",\"startNum\":";
+		msg+=pv.getStartNum();
+		msg+=",\"amount\":";
+		msg+=pv.getAmount();
+		msg+=",\"endNum\":";
+		msg+=pv.getEndNum();
+		msg+="}";
+		return msg ;
+	}
+	private String getListParsingJSON(List<MemberDTO> list) {
+		String msg = "";
+		for (MemberDTO x : list) {
 			msg += "{ ";
 			msg += "\"m_id\" :\"";
 			msg += x.getM_id() + "\"";
@@ -64,17 +94,12 @@ public class MemberSearchCommand implements MemberCommand {
 		if(msg.length()>10) {
 		msg = msg.substring(0, msg.length() - 2);
 		}
-		
-		out.print("[");
-		out.print(msg);
-		out.print("]");
-
-		request.setAttribute("s_pv", pv);
-
-		return null;
-//		response.getWriter().write(getJSON(target, content));
+		return msg ;
 	}
-
+	
+	
+	
+	
 	private String getJSON(int target, String value) {
 		StringBuffer result = new StringBuffer();
 		result.append("{\"result\":[");
