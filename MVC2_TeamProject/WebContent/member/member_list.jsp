@@ -63,7 +63,7 @@
 </head>
 
 <body>
-	<a href="../">Home</a>
+	<jsp:include page="../template/header.jsp"/>
 	<hr>
 	<h1>관리자페이지</h1>
 	<hr>
@@ -118,5 +118,6 @@
 	</table>
 	<br>
 	<jsp:include page="../page/paging.jsp"/> 
+	<jsp:include page="../template/footer.jsp"/> 
 </body> 
 </html>

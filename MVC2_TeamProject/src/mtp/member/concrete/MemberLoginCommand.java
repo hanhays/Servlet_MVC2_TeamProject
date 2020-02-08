@@ -23,16 +23,19 @@ public class MemberLoginCommand implements MemberCommand {
 			throws IOException, ServletException {
 		String id = request.getParameter("id");
 		String password= request.getParameter("password");
-		MemberDTO dto=new MemberDAO().login(id,password);
-		if(dto !=null) {
-			HttpSession sess= request.getSession();
-			sess.setAttribute("dto",dto);
-	sess.setMaxInactiveInterval(60);
-			return new CommandAction(true,"/MVC2_TeamProject/");
+		try {
+			MemberDTO dto=new MemberDAO().login(id,password);
+			if(dto !=null) {
+				HttpSession sess= request.getSession();
+				sess.setAttribute("dto",dto);
+				return new CommandAction(true,"/MVC2_TeamProject/");
+			} 
+			throw new Exception();
+		} catch (Exception e) {
+			request.setAttribute("id", id);
+			request.setAttribute("msg","아이디와 비번을 확인해 주세요.");
+			return new CommandAction(false,"loginui.do");  
 		}
-		request.setAttribute("id", id);
-		request.setAttribute("msg","아이디와 비번을 확인해 주세요.");
-		return new CommandAction(false,"loginui.do");
 	}
 
 }

@@ -44,6 +44,7 @@
 	//});
 </script>
 <body>
+	<jsp:include page="../template/header.jsp"/>
 	<h1>회원을 탈퇴하시면 활동하신 모든 내용이 삭제됩니다.</h1>
 
 	<form action="delete.do" method="post" id="test">
@@ -54,7 +55,7 @@
 		<h1>${msg}</h1>
 	</c:if>
 
-
+<jsp:include page="../template/footer.jsp"/> 
 
 </body>
 </html>

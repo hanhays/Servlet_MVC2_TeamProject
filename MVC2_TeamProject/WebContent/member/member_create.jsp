@@ -103,7 +103,7 @@ table
 </head>
 <body>
 <!-- enctype = "multipart/form-data" -->
-	<h1>회원 등록</h1>
+	<jsp:include page="../template/header.jsp"/>
 	<form action="create.do" method="post" >
 
 		<table>
@@ -164,5 +164,6 @@ table
 
 		</table>
 	</form>
+	<jsp:include page="../template/footer.jsp"/> 
 </body>
 </html>

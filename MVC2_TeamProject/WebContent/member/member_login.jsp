@@ -34,7 +34,7 @@ table {
 </script>
 </head>
 <body style="margin: auto; text-align: center;">
-	<h1>·Î±×ÀÎ</h1>
+	<jsp:include page="../template/header.jsp"/>
 	<form action="login.do" method="post">
 		<table>
 			<tr>
@@ -76,5 +76,6 @@ table {
 
 		</tr>
 	</table>
+	<jsp:include page="../template/footer.jsp"/> 
 </body>
 </html>

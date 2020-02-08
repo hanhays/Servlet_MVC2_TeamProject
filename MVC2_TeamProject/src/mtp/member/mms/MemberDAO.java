@@ -237,22 +237,34 @@ public class MemberDAO {
 				rs.getString(6), rs.getString(7), rs.getString(8).charAt(0));
 	}
 
-	public MemberDTO login(String id, String password) {
+	public MemberDTO login(String id, String password) throws Exception {
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select m_id,m_grade from member where m_id =? and m_password = ?");
+		sql.append("select m_id,m_grade from member ");
+		sql.append("where m_id =? and m_password = ?");
+		boolean flag = false;
 		try {
 			conn = dataFactory.getConnection();
+			conn.setAutoCommit(flag);
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				dto = new MemberDTO(rs.getString("m_id"), rs.getString("m_grade").charAt(0));
+				flag = true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			try {
+				if(!flag) throw new Exception();
+				conn.commit();
+			}catch (Exception e) {
+				conn.rollback();
+			}finally {
+				
+			}
 			closeAll(rs, pstmt, conn);
 		}
 

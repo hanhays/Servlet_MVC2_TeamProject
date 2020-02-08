@@ -22,7 +22,7 @@
   </script>
 </head>
 <body>
-	<h1>회원 정보 수정</h1>
+	<jsp:include page="../template/header.jsp"/>
 	<form action="member/update.do" method="post">
 		ID: <input readonly name="m_id"<%--  value="${ }" --%>><br>
 		PW: <input name="m_password" type="password"><br>
@@ -37,5 +37,6 @@
 		<input type="submit" value="수정">
 	
 	</form>
+	<jsp:include page="../template/footer.jsp"/> 
 </body>
 </html>

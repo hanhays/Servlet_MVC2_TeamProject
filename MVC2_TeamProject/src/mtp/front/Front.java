@@ -28,14 +28,13 @@ public class Front extends HttpServlet {
 			throws ServletException, IOException {
 		String path = request.getContextPath();
 		String uri = request.getRequestURI();
-		String member = "/member";
-		String board = "/board";
-		String getPath = uri.substring(path.length());
-		String what = getPath.substring(uri.contains(member) ? member.length() : board.length()).toLowerCase();
-		String[] root = getPath.split(what);
+		String[] uris=setURI(uri,path);
+		String root = uris[0];
+		String what = uris[1];
+		System.out.println(root);
+		System.out.println(what);
 		Command com = null;
-		switch (root[0].toLowerCase()) {
-
+		switch (root) {
 		case "/member":
 			com = new MemberController();
 			break;
@@ -43,7 +42,6 @@ public class Front extends HttpServlet {
 			com = new BoardController();
 			break;
 		}
-
 		CommandAction ca = com != null ? com.execute(request, response, what) : null;
 		if (ca != null) {
 			if (ca.isSend()) {
@@ -57,7 +55,22 @@ public class Front extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
-	 */
+	 */ 
+	private String[] setURI(String uri,String path) {
+		String[] uris = uri.split(path);
+		String target = uris[uris.length-1].contains("/member")?"/member":"/board";
+		System.out.println("target = "+target );
+		uri = uris[uris.length-1].substring(target.length());
+		System.out.println("uri ="+uri);
+		uri = uri.contains(target)?uri.substring(target.length()):uri;
+		System.out.println("sub -> uri ="+uri); 
+		String root = uris[uris.length-1].split(uri)[0];
+		System.out.println("root="+root);
+		root = root.contains(target)?root.length()!=target.length()?
+				root.substring(target.length()):root:root;
+		System.out.println("sub -> root ="+root);
+		return new String[] {root,uri}; 
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub

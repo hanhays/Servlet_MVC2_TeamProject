@@ -34,7 +34,7 @@ public class MemberCreateCommand implements MemberCommand {
 		m_birth.append(year);
 		m_birth.append("-");
 		m_birth.append(month); 
-		m_birth.append("-");
+		m_birth.append("-"); 
 		m_birth.append(date);
 		String m_phone = request.getParameter("phone");
 		String m_email = request.getParameter("email");

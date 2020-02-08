@@ -13,6 +13,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+	<jsp:include page="../template/header.jsp"/>
 	<c:if test="${not empty sessionScope.dto }">
 		<c:set value="${sessionScope.dto.m_grade }" var="s_grade" />
 	</c:if>
@@ -95,5 +96,6 @@
 		});
 	</script>
 	 -->
+	 <jsp:include page="../template/footer.jsp"/> 
 </body>
 </html>
