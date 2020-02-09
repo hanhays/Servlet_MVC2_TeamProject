@@ -16,6 +16,7 @@ public class PageVO {
 	private int endNum;
 	private int beginPageNum;
 	private int stopPageNum;
+	
 	private List<MemberDTO> m_list;
 	private List<BoardDTO> b_list;
 	public PageVO() {

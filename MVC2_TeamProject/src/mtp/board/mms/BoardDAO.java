@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import mtp.member.mms.MemberDTO;
 import mtp.paging.vo.PageVO;
 
 public class BoardDAO {
@@ -79,11 +80,9 @@ public class BoardDAO {
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
 		sql.append("update board set b_root=b_num ");
-		//sql.append("(select b_num from board where m_id = ?) ");
 		sql.append("where m_id = ?");
 		try {
 			pstmt = conn.prepareStatement(sql.toString());
-			//pstmt.setString(1,id);
 			pstmt.setString(1,id);
 			flag=pstmt.executeUpdate()>0 ? true:false;
 		}catch (Exception e) {
@@ -257,6 +256,29 @@ public class BoardDAO {
 			closeAll(pstmt);
 		}
 	}
+	public List<BoardDTO> searchBoard(String m_id) {
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from board where ");
+		sql.append("m_id ");
+		sql.append("like ?");
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, "%"+m_id+"%");
+			System.out.println(sql.toString());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(getRs(rs));
+			}
+			System.out.println(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt, conn);
+		} return list;
+	}
+	
 	public PageVO list(int currentPage) {
 		PageVO pv = new PageVO(currentPage);
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
