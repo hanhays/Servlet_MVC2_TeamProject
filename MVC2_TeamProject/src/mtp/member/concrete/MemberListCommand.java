@@ -1,7 +1,7 @@
 package mtp.member.concrete;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,57 +9,40 @@ import javax.servlet.http.HttpServletResponse;
 
 import mtp.member.interfaces.MemberCommand;
 import mtp.member.mms.MemberDAO;
-import mtp.member.mms.MemberDTO;
 import mtp.paging.vo.PageVO;
+import mtp.util.JsonParsing;
 import mtp.view.forward.CommandAction;
 
 public class MemberListCommand implements MemberCommand {
+
 	public MemberListCommand() {
+		// TODO Auto-generated constructor stub
 	}
+
 	@Override
-	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String what)
+	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String url)
 			throws IOException, ServletException {
-	
+
 		String currentPage_ = request.getParameter("currentPage");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 		int currentPage = 1;
 		if(currentPage_ != null) currentPage = Integer.parseInt(currentPage_);
 		
-		PageVO m_pv = new MemberDAO().list(currentPage);
-		
-		request.setAttribute("list", m_pv.getM_list());
-		request.setAttribute("l_pv", m_pv);
-		
-		return new CommandAction(false, "member_list.jsp"); 
-		
-//		int target = Integer.parseInt(request.getParameter("category"));
-//		String value = request.getParameter("content");
-//		System.out.println(target + value);
-//		response.getWriter().write(getJSON(target, value));
-//		System.out.println(getJSON(target, value));
-//		
-//		return null;
-		
+		PageVO pv = new MemberDAO().list(currentPage);
+		PrintWriter out = response.getWriter(); 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JsonParsing jp = new JsonParsing(pv, pv.getM_list());
+		String[] msg = jp.getMsg();
+		if(msg!=null) {
+			out.print("[");
+			out.print("[");
+			out.print(msg[0]);
+			out.print("]");
+			out.print(",[");
+			out.print(msg[1]);
+			out.print("]");
+			out.print("]");
+		}
+		return null;
 	}
-	
-//	private String getJSON(int target, String value) {
-//		StringBuffer result = new StringBuffer();
-//		result.append("{\"result\":[");
-//		List<MemberDTO> list = new MemberDAO().listSearch(target, value);
-//		for (int i = 0; i < list.size(); i++) {
-//			result.append("[{\"value\":\""+list.get(i).getM_grade()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_id()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_name()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_nickname()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_birth()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_age()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_phone()+"\"}, ");
-//			result.append("{\"value\":\""+list.get(i).getM_email()+"\"}], ");
-//		}
-//		result.append("]}");
-//		System.out.println(result.toString());
-//		return result.toString();
-//	}
 
-	
-	
 }

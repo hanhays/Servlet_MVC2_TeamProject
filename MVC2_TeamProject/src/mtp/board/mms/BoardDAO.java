@@ -80,11 +80,9 @@ public class BoardDAO {
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
 		sql.append("update board set b_root=b_num ");
-		//sql.append("(select b_num from board where m_id = ?) ");
 		sql.append("where m_id = ?");
 		try {
 			pstmt = conn.prepareStatement(sql.toString());
-			//pstmt.setString(1,id);
 			pstmt.setString(1,id);
 			flag=pstmt.executeUpdate()>0 ? true:false;
 		}catch (Exception e) {

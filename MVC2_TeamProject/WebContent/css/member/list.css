@@ -1,0 +1,19 @@
+#paginTable{
+ margin: auto;
+ 
+}
+#paginTable th{
+	padding: 10px;
+}
+.table{
+text-align: center; 
+border: 1px solid black;
+}
+.table th{
+background-color: #fafafa; 
+text-align: center;
+}
+#totalList{
+ margin: auto;
+text-align: center;
+}
