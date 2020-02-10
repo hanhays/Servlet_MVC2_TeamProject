@@ -21,13 +21,14 @@ public class MemberSearchCommand implements MemberCommand {
 	@Override
 	public CommandAction execute(HttpServletRequest request, HttpServletResponse response, String url)
 			throws IOException, ServletException {
-		int target = Integer.parseInt(request.getParameter("category"));
 		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		int target = Integer.parseInt(request.getParameter("category"));
 		String content =  URLDecoder.decode(request.getParameter("content"),"UTF-8");
 		content = URLDecoder.decode(content,"UTF-8");
 		content = content.split("content=")[1];
-		PrintWriter out = response.getWriter(); 
+
 		PageVO pv = new MemberDAO().listSearch(currentPage, target, content);
+		PrintWriter out = response.getWriter(); 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		JsonParsing jp = new JsonParsing(pv, pv.getM_list());
 		String[] msg = jp.getMsg();

@@ -13,7 +13,7 @@
 			$("#paging").html(" ");
 			$("#totalList").html(" ");
 			currentPage=1;
-			firstList(); 
+			firstList();  
 		});
 		$("#searchList").click(function(){
 			currentPage=1;
@@ -21,11 +21,13 @@
 		});
 	});
 	function firstList(){
-		$.ajax({
-			type : 'post',
+		
+		$.ajax({ 
+			type : 'get',
 			url : 'listloading.do',
 			data : {
 				currentPage : currentPage,
+				flag:$("#getFlag").text()
 			},
 			dataType : 'text', 
 			success : function(result) {
@@ -36,16 +38,19 @@
 	function searchList() {
 		category = $("select[name='category']").val();
 		content = $("input[name='content']");
+		
 		$.ajax({
 			type : 'post',
 			url : 'search.do',
 			data : {
 				currentPage : currentPage,
-				category : category,
-				content : content.serialize().replace(/%/g, '%25')
+				category 	: category,
+				content		: content.serialize().replace(/%/g, '%25'),
+				flag:$("#getFlag").text()
 			},
 			dataType : 'text',
 			success : function(result) {
+				console.log(result);
 				execute(result);
 				if(content!=null){
 					totalList();
@@ -55,19 +60,16 @@
 	}
 	function list(arr) {
 		var str = '';
-		var birth = '';
+		var writtenday = '';
 		$.each(arr, function(i) {
-			birth = arr[i].m_birth.split(' ')[0];
+			writtenday = arr[i].b_day.split(' ')[0];
 			str += '<tr>';
-			str += "<td><a href='read.do?id=" + arr[i].m_id + "'>"
-					+ arr[i].m_id + "</a></td>";
-			str += '<td>' + arr[i].m_name + '</td>';
-			str += '<td>' + birth + '</td>';
-			str += '<td>' + arr[i].m_age + '</td>';
-			str += '<td>' + arr[i].m_phone + '</td>';
-			str += '<td>' + arr[i].m_email + '</td>';
-			str += '<td>' + arr[i].m_nickname + '</td>';
-			str += '<td>' + arr[i].m_grade + '</td>';
+			str += '<td>' + arr[i].b_num + '</td>';
+			str += "<td><a href='read.do?b_num=" + arr[i].b_num + "'>"
+					+ arr[i].b_title + "</a></td>";
+			str += '<td>' + arr[i].m_id + '</td>';
+			str += '<td>' + writtenday + '</td>';
+			str += '<td>' + arr[i].b_cnt + '</td>';
 			str += '</tr>';
 		});
 		if (str != '') {
@@ -78,24 +80,22 @@
 		}
 	}
 	function page(arr) {
+		var amount = arr.amount;
+		var totalPage = arr.totalPage;
+		var currentPage = arr.currentPage;
 		var start = arr.beginPageNum;
 		var end = arr.stopPageNum;
-		var currentPage = arr.currentPage;
-		var totalPage = arr.totalPage;
 		var startNum = arr.startNum;
 		var endNum = arr.endNum;
-		var amount = arr.amount;
 		var msg = "";
 		msg += "<table id='paginTable'>";
 		msg += "<tr>";
 		if (currentPage > 1) {
 			msg += "<th>";
 			if (currentPage > 10) {
-				msg += "<strong onclick='getCurrentPage(" + 1
-						+ ")' > <<   </strong>";
+				msg += "<strong onclick='getCurrentPage(" +1+ ")' > <<   </strong>";
 			}
-			msg += "<strong onclick='getCurrentPage(" + (currentPage - 1)
-					+ ")'> < </strong>";
+			msg += "<strong onclick='getCurrentPage(" +(currentPage - 1)+ ")'> < </strong>";
 			msg += "</th>";
 		}
 		for (i = start; i <= end; i++) {

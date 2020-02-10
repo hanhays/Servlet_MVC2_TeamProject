@@ -1,4 +1,4 @@
-package mtp.member.mms;
+ package mtp.member.mms;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -211,7 +211,8 @@ public class MemberDAO {
 				break;
 			}
 			sql.append("like ?");
-		}
+		} 
+		sql.append("order by m_id asc");
 		sql.append("))where rnum between ? and ?");
 		try {
 			conn = dataFactory.getConnection();
