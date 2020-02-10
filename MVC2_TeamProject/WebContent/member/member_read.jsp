@@ -72,6 +72,7 @@
 				<c:choose>
 					<c:when test="${s_grade eq 98 }">
 						<a href="list.do">관리자리스트</a>
+						<a href="updateui.do?id=${dto.m_id }">회원수정</a>
 					</c:when>
 					<c:otherwise>
 						<a href="updateui.do">회원수정</a>

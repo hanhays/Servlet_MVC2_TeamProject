@@ -9,6 +9,8 @@ m_email    varchar2(50) not null,
 m_nickname varchar2(25) unique not null,
 m_grade    char(1) default 'a' --a = 일반회원,b = admin, c = 벤대상
 )
+
+select m_grade from member where m_id = 'ywyi1992'
  
 CREATE INDEX member_list_read_index 
 ON member(m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade)

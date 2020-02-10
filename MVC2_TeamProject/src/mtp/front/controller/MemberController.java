@@ -33,6 +33,9 @@ public class MemberController implements Command {
 		case "/update.do":
 			m_com = new MemberUpdateCommand();
 			break;
+		case "/update_admin.do":
+			m_com = new MemberUpdateAdminCommand();
+			break;
 		case "/list.do":
 			m_com = new MemberListUICommand();
 			break;

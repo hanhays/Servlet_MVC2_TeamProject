@@ -76,12 +76,36 @@ public class MemberDAO {
 		}
 		return dto;
 	}
+	
+	public void update_admin(MemberDTO dto) {
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("update member set ");
+		sql.append("m_grade = ? ");
+		sql.append("where m_id = ?");
+
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			String grade = String.valueOf(dto.getM_grade());
+			pstmt.setString(1, grade);
+			pstmt.setString(2, dto.getM_id());
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, conn);
+		}
+	}
 
 	public void update(MemberDTO dto) {
 
 		StringBuffer sql = new StringBuffer();
 		sql.append("update member set ");
-		sql.append("m_password = ?, m_name = ?, m_phone = ?, m_email = ?, m_nickname =? ");
+		sql.append("m_password = ?, m_name = ?, m_phone = ?, m_email = ?, m_nickname = ? ");
 		sql.append("where m_id = ?");
 
 		try {
@@ -98,7 +122,6 @@ public class MemberDAO {
 
 			pstmt.executeUpdate();
 			conn.commit();
-			// 3항 연산자로 update 여부 return 할까말까
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -106,6 +129,7 @@ public class MemberDAO {
 			closeAll(pstmt, conn);
 		}
 	}
+	
 	public MemberDTO updateui(String id) {
 		return read(id);
 	}
