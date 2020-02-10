@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>MemberCreate</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -62,8 +62,26 @@
 		getDate();
 	});
 </script>
+ <!--            if(inputed=="" && data=='0') {
+                $(".signupbtn").prop("disabled", true);
+                $(".signupbtn").css("background-color", "#aaaaaa");
+                $("#checkaa").css("background-color", "#FFCECE");
+                idCheck = 0;
+            } else if (data == '0') {
+                $("#checkaa").css("background-color", "#B0F6AC");
+                idCheck = 1;
+                if(idCheck==1 && pwdCheck == 1) {
+                    $(".signupbtn").prop("disabled", false);
+                    $(".signupbtn").css("background-color", "#4CAF50");
+                } 
+            } else if (data == '1') {
+                $(".signupbtn").prop("disabled", true);
+                $(".signupbtn").css("background-color", "#aaaaaa");
+                $("#checkaa").css("background-color", "#FFCECE");
+                idCheck = 0;
+            }  -->
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document).ready(function() {
 		$("button").click(function() {
 			var id = $("input[name='id']").val();
@@ -75,8 +93,8 @@
 				},
 				dataType : 'text',
 				success : function(result) {
-					$("p").text(result); /* ÇÊ¿ä±â´É : »ç¿ëºÒ°¡´ÉÇÒ ¶§´Â »¡°£»öÀ¸·Î »ç¿ëºÒ°¡¶ó°í ³ª¿À°Ô ÇÏ°í, Ä¿¼­°¡ ¾ÆÀÌµğ Ã¢À¸·Î ¿Å°Ü°¡µµ·Ï ¹Ù²ã¾ßÇÑ´Ù. */
-					/* ÇÊ¿ä±â´É : Áßº¹Ã¼Å© ¾ÈÇÏ°í ±×³É ³Ñ¾î°¡¸é -> Áßº¹Ã¼Å©ÇÏ¼¼¿ä¶ó´Â °ªÀÌ ¶ßµµ·Ï ¼³Á¤ÇØ¾ßÇÑ´Ù. + °ªÀü¼Û¾ÈµÇµµ·Ï±îÁö ¼³Á¤ */
+					$("p").text(result); /* í•„ìš”ê¸°ëŠ¥ : ì‚¬ìš©ë¶ˆê°€ëŠ¥í•  ë•ŒëŠ” ë¹¨ê°„ìƒ‰ìœ¼ë¡œ ì‚¬ìš©ë¶ˆê°€ë¼ê³  ë‚˜ì˜¤ê²Œ í•˜ê³ , ì»¤ì„œê°€ ì•„ì´ë”” ì°½ìœ¼ë¡œ ì˜®ê²¨ê°€ë„ë¡ ë°”ê¿”ì•¼í•œë‹¤. */
+					/* í•„ìš”ê¸°ëŠ¥ : ì¤‘ë³µì²´í¬ ì•ˆí•˜ê³  ê·¸ëƒ¥ ë„˜ì–´ê°€ë©´ -> ì¤‘ë³µì²´í¬í•˜ì„¸ìš”ë¼ëŠ” ê°’ì´ ëœ¨ë„ë¡ ì„¤ì •í•´ì•¼í•œë‹¤. + ê°’ì „ì†¡ì•ˆë˜ë„ë¡ê¹Œì§€ ì„¤ì • */
 				}
 
 			});
@@ -84,7 +102,7 @@
 
 	});
 </script>
-
+ -->
 <script type="text/javascript">
 
 	$(function() {
@@ -108,6 +126,32 @@
 	});
 </script>
 
+
+<script type="text/javascript">
+function checkId(){
+    var id = $("input[name='id']");
+    var nickName =$("input[name='nickname']");
+    $.ajax({
+    	type : 'post',
+        data : {
+            id : id.val(),
+          	nickName : nickName.serialize()
+        },
+        url : "check.do",
+        success : function(data) {
+        	alert(data);
+        	var msg = data.split(",")[0];
+        	var selecter = data.split(",")[1]; 
+        	$(selecter).html(msg);
+        	if(msg=="ì¤‘ë³µì…ë‹ˆë‹¤."){
+        		id.val("");
+        	}
+        }
+    });
+}
+
+</script>
+
 <style type="text/css">
 h1 {
 	text-align: center;
@@ -122,28 +166,30 @@ table {
 </head>
 <body>
 	<!-- enctype = "multipart/form-data" -->
-	<h1>È¸¿ø µî·Ï</h1>
+	<h1>íšŒì› ë“±ë¡</h1>
 	<form action="create.do" method="post">
 
 		<table>
 			<tr>
 				<td>ID :</td>
-				<td><input required name="id"><a><button>Áßº¹Ã¼Å©</button></a></td>
+				<td><input required name="id"><a><button onclick="checkId()">ì¤‘ë³µì²´í¬</button></a></td>
 			</tr>
-			
+			<tr>
+				<td colspan="2" id="id_check_msg"></td>
+			</tr>
 			<tr>
 				<td>PW :</td>
 				<td><input required name="password" type="password" id="pwd1" ></td>
 			</tr>
 
 			<tr>
-				<td>PWÈ®ÀÎ :</td>
+				<td>PWí™•ì¸ :</td>
 				<td><input required name="password2" type="password" id="pwd2" ></td>
 			</tr>
 
 			<tr><td colspan=4 style="text-align: center">
-				<div class="alert alert-success" id="alert-success">ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÕ´Ï´Ù.</div> 
-				<div class="alert alert-danger" id="alert-danger">ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.</div>
+				<div class="alert alert-success" id="alert-success">ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•©ë‹ˆë‹¤.</div> 
+				<div class="alert alert-danger" id="alert-danger">ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.</div>
 			</td></tr>
 
 
@@ -181,19 +227,20 @@ table {
 
 			<tr>
 				<td>Nickname:</td>
-				<td><input required name="nickname"><a><button>Áßº¹È®ÀÎ</button></a></td>
+				<td><input required name="nickname"><a><button onclick="checkId()">ì¤‘ë³µí™•ì¸</button></a></td>
+			</tr>
+				<tr>
+				<td colspan="2" id="nickName_check_msg"></td>
 			</tr>
 			<tr>
 				<td colspan=4 style="text-align: center"><input type="submit"
-					value="µî·Ï"></td>
+					value="ë“±ë¡"></td>
 
 
 			</tr>
 
 		</table>
 
-				<span id="alert-success" style="display: none;">ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÕ´Ï´Ù.</span> 
-				<span id="alert-danger" style="display: none; color: #d92742; font-weight: bold;">ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.</span>
 	
 	</form>
 </body>

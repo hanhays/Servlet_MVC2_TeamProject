@@ -54,7 +54,31 @@ public class MemberDAO {
 		}
 		return flag;
 	}
-
+	public boolean duplicate(String target,boolean flag) {
+		System.out.println("target="+target);
+		StringBuffer sql = new StringBuffer();
+		sql.append("select ");
+		switch (flag?0:1) {
+		case 0:
+			sql.append("m_id from member where m_id = ?");
+			break;
+		case 1:
+			sql.append("m_nickname from member where m_nickname = ?");
+			break;
+		}
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, target);
+			rs = pstmt.executeQuery();
+			flag = rs.next();
+		}catch (Exception e) {
+			
+		}finally {
+			closeAll(rs,pstmt,conn);
+		}
+		return flag;
+	}
 	public MemberDTO read(String id) { 
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
@@ -326,4 +350,6 @@ public class MemberDAO {
 		}
 		return amount;
 	}
+
+
 }

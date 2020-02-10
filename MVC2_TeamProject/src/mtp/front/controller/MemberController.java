@@ -61,11 +61,13 @@ public class MemberController implements Command {
 			m_com = new MemberLogoutCommand();
 			break;
 		case "/check.do":
+			m_com = new MemberDuplicateCommand();
 			break;
 		case "/search.do":
 			m_com = new MemberSearchCommand();
 			break; 
 		}
+
 		return m_com.execute(request, response, what);
 	}
 

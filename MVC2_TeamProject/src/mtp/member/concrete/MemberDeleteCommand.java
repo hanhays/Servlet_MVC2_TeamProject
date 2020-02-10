@@ -23,7 +23,7 @@ public class MemberDeleteCommand implements MemberCommand {
 			throws IOException, ServletException {
 		try {
 		String password = request.getParameter("password");  //pw를 받아옴(jsp) 
-		HttpSession sess=request.getSession(false);
+		HttpSession sess = request.getSession(false);
 		String id =((MemberDTO)sess.getAttribute("dto")).getM_id();
 			if(new MemberDAO().delete(id, password)) {
 				sess.invalidate();
