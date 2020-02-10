@@ -17,20 +17,7 @@ table {
 	text-align: center;
 }
 </style>
-<script type="text/javascript">
-	function formSubmit() {
-		$("form").submit();
-	}
-	$(function() {
-		$("form").submit(
-				function() {
-					var id = $("input[name='id']").val();
-					if (id == '') {
-						$("input[name='id']").val(
-								$("input[name='id']").attr("placeholder"));
-					}
-				});
-	});
+<script type="text/javascript" src="../js/login/login.js">
 </script>
 </head>
 <body style="margin: auto; text-align: center;">
