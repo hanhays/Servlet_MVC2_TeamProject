@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../css/member/list.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../js/member/list.js"></script>
+<script type="text/javascript" src="../js/member/list.js" charset="UTF-8"></script> 
 </head>
 <body> 
 	<a href="../">Home</a>
@@ -49,8 +49,7 @@
 					<th>전화번호</th>
 					<th>이메일</th>
 					<th>닉네임</th>
-					<th>등급
-					</th>
+					<th>등급</th>
 				</tr>
 			</thead>
 			<tbody id="ajaxTable">

@@ -331,6 +331,55 @@ public class BoardDAO {
 		}
 		return amount;
 	}
+	
+	public PageVO listSearch(int currentPage, int target, String content) {
+		PageVO pv = new PageVO(currentPage);
+		List<BoardDTO> b_list = new ArrayList<BoardDTO>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from ");
+		sql.append("(select b_num, b_title, m_id, b_day, b_cnt, ");
+		sql.append("b_indent, rownum rnum from ");
+		sql.append("(select * from board order by b_root desc, b_step asc ");
+		sql.append("from (select * from board where ");
+		if (content != null) {
+			switch (target) {
+			case 0:
+				sql.append("b_num ");
+				break;
+			case 1:
+				sql.append("b_title ");
+				break;
+			case 2: 
+				sql.append("m_id ");
+				break;
+			case 3:
+				sql.append("b_day ");
+				break;
+			default:
+				break;
+			} sql.append("like ?");
+		}
+		sql.append("where rnum between ? and ? ))) ");
+		try {
+			conn = dataFactory.getConnection();
+			int amount = getAmount(conn);
+			pv.setAmount(amount);
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,"%" + content +"%");
+			pstmt.setInt(2, pv.getStartNum());
+			pstmt.setInt(3, pv.getEndNum());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				b_list.add(getRs(rs));
+			}
+			pv.setB_list(b_list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt, conn);
+		}
+		return pv;
+	}
 
 
 }

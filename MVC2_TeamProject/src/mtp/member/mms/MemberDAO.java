@@ -157,8 +157,6 @@ public class MemberDAO {
 		sql.append("m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
 		sql.append("order by m_id desc");
 		sql.append("))where rnum between ? and ?");
-		
-		System.out.println(sql.toString());
 		try {
 			conn = dataFactory.getConnection();
 			int amount = getAmount(conn);
@@ -234,8 +232,6 @@ public class MemberDAO {
 				list.add(getRs(rs));
 			}
 			pv.setM_list(list);
-			pv.getM_list().forEach( dto ->{
-			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

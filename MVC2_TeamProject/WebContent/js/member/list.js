@@ -73,7 +73,7 @@
 		if (str != '') {
 			$("#ajaxTable").html(str);
 		} else {
-			str += "<td colspan='10'>조회하신 정보가 유효하지 않습니다.</td>";
+			str += "<td colspan='10'>검색하신 정보는 없습니다.</td>";
 			$("#ajaxTable").html(str);
 		}
 	}
@@ -132,7 +132,7 @@
 	function totalList(){
 		var msg="";
 		msg += "<strong>";
-		msg += "전체목록";
+		msg += "전체 List";
 		msg += "</strong>";
 		$("#totalList").html(" ");
 		$("#totalList").append(msg);
