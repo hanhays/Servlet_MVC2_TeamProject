@@ -10,13 +10,16 @@ import mtp.board.concrete.BoardCreateCommand;
 import mtp.board.concrete.BoardDeleteCommand;
 import mtp.board.concrete.BoardListCommand;
 import mtp.board.concrete.BoardReadCommand;
+import mtp.board.concrete.BoardSearchCommand;
 import mtp.board.concrete.BoardUpdateCommand;
 import mtp.board.interfaces.BoardCommand;
 import mtp.board.ui.BoardCreateUICommand;
 import mtp.board.ui.BoardDeleteUICommand;
+import mtp.board.ui.BoardListUICommand;
 import mtp.board.ui.BoardUpdateUICommand;
 import mtp.member.concrete.MemberCreateCommand;
 import mtp.member.concrete.MemberDeleteCommand;
+import mtp.member.concrete.MemberListCommand;
 import mtp.member.concrete.MemberLoginCommand;
 import mtp.member.concrete.MemberLogoutCommand;
 import mtp.member.concrete.MemberReadCommand;
@@ -48,6 +51,9 @@ public class BoardController implements BoardCommand {
 			b_com = new BoardUpdateCommand();
 			break;
 		case "/list.do":
+			b_com = new BoardListUICommand();
+			break;
+		case "/listloading.do":
 			b_com = new BoardListCommand();
 			break;
 		case "/create.do":
@@ -61,6 +67,9 @@ public class BoardController implements BoardCommand {
 			break;
 		case "/createui.do":
 			b_com = new BoardCreateUICommand();
+			break;
+		case "/search.do":
+			b_com = new BoardSearchCommand();
 			break;
 		}
 		return b_com.execute(request, response, what);
