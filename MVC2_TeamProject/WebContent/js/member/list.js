@@ -13,11 +13,13 @@
 			$("#paging").html(" ");
 			$("#totalList").html(" ");
 			currentPage=1;
-			firstList(); 
+			firstList();
+			//encode();
 		});
 		$("#searchList").click(function(){
 			currentPage=1;
 			searchList();
+			//encode();
 		});
 	});
 	function firstList(){
@@ -144,3 +146,13 @@
 			page(arr[1][0]);
 		}
 	}
+//	function encode(){
+//		var totalList = $("#totalList").val();
+//		var ajaxTable = $("#ajaxTable").val();
+//		if(totalList !=null || ajaxTable!=null){
+//			const encoded1 = iconv.encode(totalList,'euc-kr');
+//			const encoded2 = iconv.encode(ajaxTable,'euc-kr');
+//			const decoded1 = iconv.decode(totalList,'euc-kr');
+//			const decoded2 = iconv.decode(ajaxTable,'euc-kr');
+//		}
+	//}
