@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import mtp.member.mms.MemberDTO;
 import mtp.paging.vo.PageVO;
 
 public class BoardDAO {
@@ -79,11 +80,9 @@ public class BoardDAO {
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
 		sql.append("update board set b_root=b_num ");
-		//sql.append("(select b_num from board where m_id = ?) ");
 		sql.append("where m_id = ?");
 		try {
 			pstmt = conn.prepareStatement(sql.toString());
-			//pstmt.setString(1,id);
 			pstmt.setString(1,id);
 			flag=pstmt.executeUpdate()>0 ? true:false;
 		}catch (Exception e) {
@@ -257,6 +256,29 @@ public class BoardDAO {
 			closeAll(pstmt);
 		}
 	}
+	public List<BoardDTO> searchBoard(String m_id) {
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from board where ");
+		sql.append("m_id ");
+		sql.append("like ?");
+		try {
+			conn = dataFactory.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, "%"+m_id+"%");
+			System.out.println(sql.toString());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(getRs(rs));
+			}
+			System.out.println(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt, conn);
+		} return list;
+	}
+	
 	public PageVO list(int currentPage) {
 		PageVO pv = new PageVO(currentPage);
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
@@ -308,6 +330,55 @@ public class BoardDAO {
 			closeAll(rs, pstmt, null);
 		}
 		return amount;
+	}
+	
+	public PageVO listSearch(int currentPage, int target, String content) {
+		PageVO pv = new PageVO(currentPage);
+		List<BoardDTO> b_list = new ArrayList<BoardDTO>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from ");
+		sql.append("(select b_num, b_title, m_id, b_day, b_cnt, ");
+		sql.append("b_indent, rownum rnum from ");
+		sql.append("(select * from board order by b_root desc, b_step asc ");
+		sql.append("from (select * from board where ");
+		if (content != null) {
+			switch (target) {
+			case 0:
+				sql.append("b_num ");
+				break;
+			case 1:
+				sql.append("b_title ");
+				break;
+			case 2: 
+				sql.append("m_id ");
+				break;
+			case 3:
+				sql.append("b_day ");
+				break;
+			default:
+				break;
+			} sql.append("like ?");
+		}
+		sql.append("where rnum between ? and ? ))) ");
+		try {
+			conn = dataFactory.getConnection();
+			int amount = getAmount(conn);
+			pv.setAmount(amount);
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1,"%" + content +"%");
+			pstmt.setInt(2, pv.getStartNum());
+			pstmt.setInt(3, pv.getEndNum());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				b_list.add(getRs(rs));
+			}
+			pv.setB_list(b_list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(rs, pstmt, conn);
+		}
+		return pv;
 	}
 
 
