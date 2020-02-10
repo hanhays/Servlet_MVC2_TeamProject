@@ -27,8 +27,6 @@ public class MemberDAO {
 		}
 
 	}
-
-	
 	public boolean create(MemberDTO dto) {
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
@@ -157,8 +155,6 @@ public class MemberDAO {
 		sql.append("m_id,m_name,m_birth,m_age,m_phone,m_email,m_nickname,m_grade from member ");
 		sql.append("order by m_id desc");
 		sql.append("))where rnum between ? and ?");
-		
-		System.out.println(sql.toString());
 		try {
 			conn = dataFactory.getConnection();
 			int amount = getAmount(conn);
