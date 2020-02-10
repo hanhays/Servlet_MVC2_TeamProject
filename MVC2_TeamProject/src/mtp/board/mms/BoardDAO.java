@@ -27,7 +27,7 @@ public class BoardDAO {
 		}
 		
 	}
-
+	
 	private void closeAll(Object...obj) {
 		try {
 			if(obj!=null) {
