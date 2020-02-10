@@ -54,24 +54,19 @@ public class MemberDAO {
 		}
 		return flag;
 	}
-	public boolean duplicate(String target,boolean flag) {
-		System.out.println("target="+target);
+	public boolean duplicate(String target,String value) {
+		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select ");
-		switch (flag?0:1) {
-		case 0:
-			sql.append("m_id from member where m_id = ?");
-			break;
-		case 1:
-			sql.append("m_nickname from member where m_nickname = ?");
-			break;
-		}
+		sql.append("select m_id from member ");
+		sql.append("where ");
+		sql.append(target);
+		sql.append(" = ?");
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, target);
+			pstmt.setString(1, value);
 			rs = pstmt.executeQuery();
-			flag = rs.next();
+			flag  = rs.next();
 		}catch (Exception e) {
 			
 		}finally {

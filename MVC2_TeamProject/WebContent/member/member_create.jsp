@@ -16,53 +16,11 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-		var old_year = $("#year").val();
-		var old_month = $("#month").val();
-		var new_year = null;
-		var new_month = null;
-		var date = null;
-		$("#year").change(function() {
-			new_year = $("#year").val();
-			getDate();
-		});
-		$("#month").change(function() {
-			new_month = $("#month").val();
-			getDate();
-		});
-		function getDate() {
-			if (new_year == null && new_month == null) {
-				year_month_change(old_year, old_month);
-			} else if (new_year == null && new_month != null) {
-				year_month_change(old_year, new_month);
-			} else if (new_year != null && new_month == null) {
-				year_month_change(new_year, old_month);
-			} else {
-				year_month_change(new_year, new_month);
-			}
-		}
-		function year_month_change(year, month) {
-			date = new Date(year, month, 0).getDate();
-			$("#date").html("");
-			getDates(date);
-		}
-		function getDates(date) {
-			for (var i = 1; i <= date; i++) {
-				if (String(i).toString().length < 2) {
-					$("#date").append(
-							"<option value='0" + String(i) + "'>0" + String(i)
-									+ "</oprion>");
-				} else {
-					$("#date").append(
-							"<option value='" + i + "'>" + i + "</oprion>");
-				}
-			}
-		}
-		getDate();
-	});
+<script type="text/javascript" src="../js/member/create.js"
+	charset="UTF-8">
+	
 </script>
- <!--            if(inputed=="" && data=='0') {
+<!--            if(inputed=="" && data=='0') {
                 $(".signupbtn").prop("disabled", true);
                 $(".signupbtn").css("background-color", "#aaaaaa");
                 $("#checkaa").css("background-color", "#FFCECE");
@@ -103,7 +61,7 @@
 	});
 </script>
  -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
 	$(function() {
 		$("#alert-success").hide();
@@ -124,32 +82,11 @@
 			}
 		});
 	});
-</script>
+</script> -->
 
 
 <script type="text/javascript">
-function checkId(){
-    var id = $("input[name='id']");
-    var nickName =$("input[name='nickname']");
-    $.ajax({
-    	type : 'post',
-        data : {
-            id : id.val(),
-          	nickName : nickName.serialize()
-        },
-        url : "check.do",
-        success : function(data) {
-        	alert(data);
-        	var msg = data.split(",")[0];
-        	var selecter = data.split(",")[1]; 
-        	$(selecter).html(msg);
-        	if(msg=="중복입니다."){
-        		id.val("");
-        	}
-        }
-    });
-}
-
+	
 </script>
 
 <style type="text/css">
@@ -172,26 +109,35 @@ table {
 		<table>
 			<tr>
 				<td>ID :</td>
-				<td><input required name="id"><a><button onclick="checkId()">중복체크</button></a></td>
+				<td><input type="text" required name="m_id"></td>
 			</tr>
 			<tr>
 				<td colspan="2" id="id_check_msg"></td>
 			</tr>
 			<tr>
 				<td>PW :</td>
-				<td><input required name="password" type="password" id="pwd1" ></td>
+				<td><input required name="password" type="password" id="pwd1"></td>
 			</tr>
-
+			<tr>
+				<td colspan="2" id="password_1_check"></td>
+			</tr>
 			<tr>
 				<td>PW확인 :</td>
-				<td><input required name="password2" type="password" id="pwd2" ></td>
+				<td><input required name="password_check" type="password"
+					id="pwd2"></td>
 			</tr>
-
-			<tr><td colspan=4 style="text-align: center">
-				<div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div> 
-				<div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
-			</td></tr>
-
+			<tr>
+				<td colspan="2" id="password_2_check"></td>
+			</tr>
+			<!-- 			<tr>
+				<td colspan=4 style="text-align: center">
+					<div class="alert alert-success" id="alert-success">비밀번호가
+						일치합니다.</div>
+					<div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지
+						않습니다.</div>
+				</td>
+			</tr>
+ -->
 
 
 			<tr>
@@ -227,9 +173,9 @@ table {
 
 			<tr>
 				<td>Nickname:</td>
-				<td><input required name="nickname"><a><button onclick="checkId()">중복확인</button></a></td>
+				<td><input required name="m_nickname"></td>
 			</tr>
-				<tr>
+			<tr>
 				<td colspan="2" id="nickName_check_msg"></td>
 			</tr>
 			<tr>
@@ -241,7 +187,7 @@ table {
 
 		</table>
 
-	
+
 	</form>
 </body>
 </html>
