@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -7,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>MemberCreate</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -75,8 +74,8 @@
 				},
 				dataType : 'text',
 				success : function(result) {
-					$("p").text(result); /* �ʿ��� : ���Ұ����� ���� ���������� ���Ұ���� ������ �ϰ�, Ŀ���� ���̵� â���� �Űܰ����� �ٲ���Ѵ�. */
-					/* �ʿ��� : �ߺ�üũ ���ϰ� �׳� �Ѿ�� -> �ߺ�üũ�ϼ����� ���� �ߵ��� �����ؾ��Ѵ�. + �����۾ȵǵ��ϱ��� ���� */
+					$("p").text(result); /* 필요기능 : 사용불가능할 때는 빨간색으로 사용불가라고 나오게 하고, 커서가 아이디 창으로 옮겨가도록 바꿔야한다. */
+					/* 필요기능 : 중복체크 안하고 그냥 넘어가면 -> 중복체크하세요라는 값이 뜨도록 설정해야한다. + 값전송안되도록까지 설정 */
 				}
 
 			});
@@ -122,13 +121,13 @@ table {
 </head>
 <body>
 	<!-- enctype = "multipart/form-data" -->
-	<h1>ȸ�� ���</h1>
+	<h1>회원 등록</h1>
 	<form action="create.do" method="post">
 
 		<table>
 			<tr>
 				<td>ID :</td>
-				<td><input required name="id"><a><button>�ߺ�üũ</button></a></td>
+				<td><input required name="id"><a><button>중복체크</button></a></td>
 			</tr>
 			
 			<tr>
@@ -137,12 +136,12 @@ table {
 			</tr>
 
 			<tr>
-				<td>PWȮ�� :</td>
+				<td>PW확인 :</td>
 				<td><input required name="password2" type="password" id="pwd2" ></td>
 			</tr>
 			<tr><td colspan=4>
-				<div class="alert alert-success" id="alert-success">��й�ȣ�� ��ġ�մϴ�.</div> 
-				<div class="alert alert-danger" id="alert-danger">��й�ȣ�� ��ġ���� �ʽ��ϴ�.</div>
+				<div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div> 
+				<div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
 			</td></tr>
 
 
@@ -180,19 +179,19 @@ table {
 
 			<tr>
 				<td>Nickname:</td>
-				<td><input required name="nickname"><a><button>�ߺ�Ȯ��</button></a></td>
+				<td><input required name="nickname"><a><button>중복확인</button></a></td>
 			</tr>
 			<tr>
 				<td colspan=4 style="text-align: center"><input type="submit"
-					value="���"></td>
+					value="등록"></td>
 
 
 			</tr>
 
 		</table>
 
-				<span id="alert-success" style="display: none;">��й�ȣ�� ��ġ�մϴ�.</span> 
-				<span id="alert-danger" style="display: none; color: #d92742; font-weight: bold;">��й�ȣ�� ��ġ���� �ʽ��ϴ�.</span>
+				<span id="alert-success" style="display: none;">비밀번호가 일치합니다.</span> 
+				<span id="alert-danger" style="display: none; color: #d92742; font-weight: bold;">비밀번호가 일치하지 않습니다.</span>
 	
 	</form>
 </body>

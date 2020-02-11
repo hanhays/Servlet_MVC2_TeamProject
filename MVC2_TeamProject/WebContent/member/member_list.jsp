@@ -14,8 +14,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/member/list.js" charset="UTF-8"></script> 
-</head>
-<body> 
+</head> 
+<body>  
 	<a href="../">Home</a>
 	<hr>
 	<h1 style="text-align: center;">관리자페이지</h1>
