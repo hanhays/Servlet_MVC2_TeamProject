@@ -3,9 +3,12 @@ package mtp.member.concrete;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.util.http.Cookies;
 
 import mtp.member.interfaces.MemberCommand;
 import mtp.member.mms.MemberDAO;
@@ -23,10 +26,16 @@ public class MemberLoginCommand implements MemberCommand {
 			throws IOException, ServletException {
 		String id = request.getParameter("id");
 		String password= request.getParameter("password");
-		MemberDTO dto=new MemberDAO().login(id,password);
+		String autologin = request.getParameter("autologin");
+		MemberDTO dto=new MemberDAO().login(id,password,true);
 		if(dto !=null) {
 			HttpSession sess= request.getSession();
 			sess.setAttribute("dto",dto);
+			if(autologin.equals("on")) {
+				Cookie c_id = new Cookie("id",dto.getM_id());
+				c_id.setPath(request.getContextPath());
+				response.addCookie(c_id);
+				} 
 			return new CommandAction(true,"/MVC2_TeamProject/");
 		}
 		request.setAttribute("id", id);
