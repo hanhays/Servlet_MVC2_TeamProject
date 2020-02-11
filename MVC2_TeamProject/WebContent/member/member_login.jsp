@@ -17,8 +17,7 @@ table {
 	text-align: center;
 }
 </style>
-<script type="text/javascript" src="../js/member/login.js">
-</script>
+<script type="text/javascript" src="../js/member/login.js"></script>
 </head>
 <body style="margin: auto; text-align: center;">
 	<a href="../">Home</a>

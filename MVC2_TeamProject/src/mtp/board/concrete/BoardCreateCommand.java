@@ -32,7 +32,7 @@ public class BoardCreateCommand implements MemberCommand {
 			return new CommandAction(false , "createui.do") ;
 		}
 	
-		return new CommandAction(true ,"list.do");
+		return new CommandAction(true ,"list.do?flag=true");
 	}
 
 }
