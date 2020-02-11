@@ -9,6 +9,18 @@ b_root number(10) null,
 b_step number(6) default 0,
 b_indent number(6) default 0
 ) 
+select /*+ INDEX_FFS(board board_list_read_index) */ b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from( 
+select b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent, rownum rnum from (
+select /*+ INDEX_FFS(board board_list_read_index) */ b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from board order by b_root desc, b_step asc
+))where rnum between 1 and 10
+
+select /*+ INDEX_FFS(board board_list_read_index) */ b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from( 
+select b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent, rownum rnum from (
+select /*+ INDEX_FFS(board board_list_read_index) */ b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from board  where m_id like '%m%' order by b_root desc, b_step asc))
+where rnum between 1 and 3
+
+create index board_list_read_index
+on board(b_num, m_id, b_title, b_content, b_day, b_cnt, b_root, b_step, b_indent)
 
 select * from 
 (select b_num, m_id, b_title, b_day, b_cnt, b_indent, rownum rnum from 
@@ -48,7 +60,12 @@ delete from BOARD where b_num = 1;
 select * from board
 commit
 
-
+select /*+ INDEX_FFS(board board_list_read_index) */ b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from( 
+select b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent, rownum rnum from ( 
+select /*+ INDEX_FFS(board board_list_read_index) */ b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from board  
+where b_num like 5 order by b_root desc, b_step asc
+)
+)where rnum between 1 and 10
 
 select * from BOARD
 	

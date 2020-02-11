@@ -155,7 +155,7 @@ public class BoardDAO {
 
 	public BoardDTO updateui(int num) {
 		BoardDTO dto = null;
-		StringBuffer sql =new StringBuffer("select * from board  where b_num = ?");
+		StringBuffer sql =new StringBuffer("select * from board where b_num = ?");
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
@@ -279,22 +279,35 @@ public class BoardDAO {
 		} return list;
 	}
 	
-	public PageVO list(int currentPage) {
+	public PageVO list(int currentPage,String id) {
 		PageVO pv = new PageVO(currentPage);
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		StringBuffer sql = new StringBuffer();
-		sql.append("select * from (");
-		sql.append("select b_num, m_id, b_title, b_content, b_day, ");
-		sql.append("b_cnt, b_indent, rownum rnum from (");
-		sql.append("select * from board order by b_root desc, b_step asc)) ");
+		sql.append("select /*+ INDEX_FFS(board board_list_read_index) */ ");
+		sql.append("b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from( ");
+		sql.append("select b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent, ");
+		sql.append("rownum rnum from (");
+		sql.append("select /*+ INDEX_FFS(board board_list_read_index) */ ");
+		sql.append("b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent ");
+		sql.append("from board ");
+		if(id!=null) {
+			sql.append("where m_id = ? ");
+		}
+		sql.append("order by b_root desc, b_step asc)) ");
 		sql.append("where rnum between ? and ?");
 		try {
 			conn = dataFactory.getConnection();
 			int amount = getAmount(conn);
 			pv.setAmount(amount);
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(1, pv.getStartNum());
-			pstmt.setInt(2, pv.getEndNum());
+			if(id != null) {
+				pstmt.setString(1,id); 
+				pstmt.setInt(2, pv.getStartNum());
+				pstmt.setInt(3, pv.getEndNum()); 
+			}else {
+				pstmt.setInt(1, pv.getStartNum());
+				pstmt.setInt(2, pv.getEndNum());
+			}
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				list.add(getRs(rs));
@@ -309,7 +322,7 @@ public class BoardDAO {
 	}
 
 	private BoardDTO getRs(ResultSet rs) throws Exception {
-		return new BoardDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), 0, 0,
+		return new BoardDTO(rs.getInt(1), rs.getString(3),rs.getString(2), null, rs.getString(4), rs.getInt(5), rs.getInt(1), 0,
 				rs.getInt(7));
 	}
 	private int getAmount(Connection conn) {
@@ -332,15 +345,17 @@ public class BoardDAO {
 		return amount;
 	}
 	
-	public PageVO listSearch(int currentPage, int target, String content) {
+	public PageVO listSearch(int currentPage, int target, String content,String id) {
 		PageVO pv = new PageVO(currentPage);
-		List<BoardDTO> b_list = new ArrayList<BoardDTO>();
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		StringBuffer sql = new StringBuffer();
-		sql.append("select * from ");
-		sql.append("(select b_num, b_title, m_id, b_day, b_cnt, ");
-		sql.append("b_indent, rownum rnum from ");
-		sql.append("(select * from board order by b_root desc, b_step asc ");
-		sql.append("from (select * from board where ");
+		sql.append("select /*+ INDEX_FFS(board board_list_read_index) */ ");
+		sql.append("b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent from( ");
+		sql.append("select b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent, ");
+		sql.append("rownum rnum from ( ");
+		sql.append("select /*+ INDEX_FFS(board board_list_read_index) */ ");
+		sql.append("b_num, b_title, m_id, b_day, b_cnt, b_root, b_step, b_indent ");
+		sql.append("from board  where ");
 		if (content != null) {
 			switch (target) {
 			case 0:
@@ -359,20 +374,33 @@ public class BoardDAO {
 				break;
 			} sql.append("like ?");
 		}
-		sql.append("where rnum between ? and ? ))) ");
+		
+		if(id!=null) {
+			sql.append("m_id = ?");
+		}
+		sql.append("order by b_root desc, b_step asc))");
+		sql.append("where rnum between ? and ?");
+		System.out.println(sql.toString());
 		try {
 			conn = dataFactory.getConnection();
 			int amount = getAmount(conn);
 			pv.setAmount(amount);
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1,"%" + content +"%");
-			pstmt.setInt(2, pv.getStartNum());
-			pstmt.setInt(3, pv.getEndNum());
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				b_list.add(getRs(rs));
+			if (content == null) {
+				pstmt.setString(1, id);
+				pstmt.setInt(2, pv.getStartNum());
+				pstmt.setInt(3, pv.getEndNum());
+			} else {
+				pstmt.setString(1,"%" + content +"%");
+				pstmt.setInt(2, pv.getStartNum());
+				pstmt.setInt(3, pv.getEndNum());
 			}
-			pv.setB_list(b_list);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				list.add(getRs(rs));
+			}
+			pv.setB_list(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

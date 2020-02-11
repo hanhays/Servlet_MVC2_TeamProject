@@ -1,4 +1,4 @@
-package mtp.member.mms;
+ package mtp.member.mms;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,8 +27,6 @@ public class MemberDAO {
 		}
 
 	}
-
-	
 	public boolean create(MemberDTO dto) {
 		boolean flag = false;
 		StringBuffer sql = new StringBuffer();
@@ -235,7 +233,8 @@ public class MemberDAO {
 				break;
 			}
 			sql.append("like ?");
-		}
+		} 
+		sql.append("order by m_id asc");
 		sql.append("))where rnum between ? and ?");
 		try {
 			conn = dataFactory.getConnection();
@@ -264,15 +263,20 @@ public class MemberDAO {
 		return pv;
 	}
 	
-	public MemberDTO login(String id, String password) {
+	public MemberDTO login(String id, String password,boolean flag) {
 		MemberDTO dto = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select m_id,m_grade from member where m_id =? and m_password = ?");
+		sql.append("select m_id,m_grade from member where m_id =? ");
+		if(flag) {
+			sql.append("and m_password = ?");
+		}
 		try {
 			conn = dataFactory.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, id);
-			pstmt.setString(2, password);
+			if(flag) {
+				pstmt.setString(2, password);
+			}
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				dto = new MemberDTO(rs.getString("m_id"), rs.getString("m_grade").charAt(0));

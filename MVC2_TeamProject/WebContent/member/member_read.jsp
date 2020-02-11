@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>MemberRead</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script
@@ -16,7 +16,7 @@
 	<c:if test="${not empty sessionScope.dto }">
 		<c:set value="${sessionScope.dto.m_grade }" var="s_grade" />
 	</c:if>
-	<a href="../">È¨</a>
+	<a href="../">í™ˆ</a>
 	<c:choose>
 		<c:when test="${not empty requestScope.dto }">
 			<table>
@@ -34,7 +34,7 @@
 					<c:set value="${birth[0] }" var="year" />
 					<c:set value="${birth[1] }" var="month" />
 					<c:set value="${fn:split(birth[2],' ') }" var="day" />
-					<td>${year}³â${month}¿ù${day[0]}ÀÏ</td>
+					<td>${year}ë…„${month}ì›”${day[0]}ì¼</td>
 				</tr>
 				<tr>
 					<th>Age</th>
@@ -57,13 +57,13 @@
 					<c:set value="${requestScope.dto.m_grade }" var="grade" />
 					<c:choose>
 						<c:when test="${grade eq 97 }">
-							<td>ÀÏ¹İÈ¸¿ø</td>
+							<td>ì¼ë°˜íšŒì›</td>
 						</c:when>
 						<c:when test="${grade eq 98 }">
-							<td>¿î¿µÀÚ</td>
+							<td>ìš´ì˜ì</td>
 						</c:when>
 						<c:otherwise>
-							<td>³ª»Û³ğ</td>
+							<td>ë‚˜ìœë†ˆ</td>
 						</c:otherwise>
 					</c:choose>
 				</tr>
@@ -71,13 +71,13 @@
 			<div>
 				<c:choose>
 					<c:when test="${s_grade eq 98 }">
-						<a href="list.do">°ü¸®ÀÚ¸®½ºÆ®</a>
-						<a href="updateui.do?id=${dto.m_id }">È¸¿ø¼öÁ¤</a>
+						<a href="list.do">ê´€ë¦¬ìë¦¬ìŠ¤íŠ¸</a>
+						<a href="updateui.do?id=${dto.m_id }">íšŒì› ì •ë³´ ë³€ê²½</a>
 					</c:when>
 					<c:otherwise>
-						<a href="updateui.do">È¸¿ø¼öÁ¤</a>
-						<a href="deleteui.do">È¸¿øÅ»Åğ</a>
-						<a href="../board/list.do">³»°¡¾´±Ûº¸±â</a>
+						<a href="updateui.do">íšŒì›ìˆ˜ì •</a>
+						<a href="deleteui.do">íšŒì›íƒˆí‡´</a>
+						<a href="../board/list.do">ë‚´ê°€ì“´ê¸€ë³´ê¸°</a>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -89,7 +89,7 @@
 			$("#iddea").click(function(event) {
 				event.preventDefault();
 				
-				var pw = prompt("ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+				var pw = prompt("ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
 				location.assign("delete.do?password="+pw);
 				
 			});

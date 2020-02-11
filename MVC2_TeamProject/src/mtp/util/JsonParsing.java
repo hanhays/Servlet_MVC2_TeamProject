@@ -23,8 +23,9 @@ public class JsonParsing<E> {
 	}
 	@SuppressWarnings("unchecked")
 	private String switchList(List<E> list) {
-		return list.get(0) instanceof MemberDTO ? memberList(((List<MemberDTO>) list))
-				: boardList(((List<BoardDTO>) list));
+		return list.get(0) instanceof MemberDTO ? 
+			   memberList(((List<MemberDTO>) list))
+			 : boardList(((List<BoardDTO>) list));
 	}
 
 	private String pagin(PageVO pv) {
@@ -44,8 +45,6 @@ public class JsonParsing<E> {
 		msg.append(pv.getAmount());
 		msg.append(",\"endNum\":");
 		msg.append(pv.getEndNum());
-		msg.append(",\"listSize\":");
-		msg.append(pv.getM_list().size());
 		msg.append("}");
 		return msg.toString();
 	}
@@ -55,20 +54,19 @@ public class JsonParsing<E> {
 			msg.append("{ ");
 			msg.append("\"b_num\":");
 			msg.append(x.getB_num());
-			msg.append(",\"m_id\" :\"");
-			msg.append(x.getM_id() + "\"");
-			msg.append(",\"b_title\" :\"");
-			msg.append(x.getB_title() + "\"");
-			msg.append(",\"b_day\" :\"");
-			msg.append(x.getB_day() + "\"");
-			msg.append(",\"b_cnt\":");
+			msg.append(",\"m_id\":\"");
+			msg.append(x.getM_id());
+			msg.append("\",\"b_title\":\"");
+			msg.append(x.getB_title());
+			msg.append("\",\"b_day\":\"");
+			msg.append(x.getB_day());
+			msg.append("\",\"b_cnt\":");
 			msg.append(x.getB_cnt());
-			msg.append(",\"b_root\" :");
+			msg.append(",\"b_root\":");
 			msg.append(x.getB_root());
-			msg.append(",\"b_indent\" :");
+			msg.append(",\"b_indent\":");	
 			msg.append(x.getB_indent());
-			msg.append(" } ");
-			msg.append(", ");
+			msg.append("}, ");
 		}
 		return comaSplit(msg);
 	}
@@ -77,23 +75,22 @@ public class JsonParsing<E> {
 		for (MemberDTO x : list) {
 			msg.append("{");
 			msg.append("\"m_id\":\"");
-			msg.append(x.getM_id() + "\",");
-			msg.append("\"m_name\":\"");
-			msg.append(x.getM_name() + "\",");
-			msg.append("\"m_birth\":\"");
-			msg.append(x.getM_birth() + "\",");
-			msg.append("\"m_age\":");
+			msg.append(x.getM_id());
+			msg.append("\",\"m_name\":\"");
+			msg.append(x.getM_name());
+			msg.append("\",\"m_birth\":\"");
+			msg.append(x.getM_birth());
+			msg.append("\",\"m_age\":");
 			msg.append(x.getM_age());
 			msg.append(",\"m_phone\":\"");
-			msg.append(x.getM_phone() + "\",");
-			msg.append("\"m_email\":\"");
-			msg.append(x.getM_email() + "\",");
-			msg.append("\"m_nickname\":\"");
-			msg.append(x.getM_nickname() + "\",");
-			msg.append("\"m_grade\":\"");
-			msg.append(x.getM_grade() + "\"");
-			msg.append(" } ");
-			msg.append(", ");
+			msg.append(x.getM_phone());
+			msg.append("\",\"m_email\":\"");
+			msg.append(x.getM_email());
+			msg.append("\",\"m_nickname\":\"");
+			msg.append(x.getM_nickname());
+			msg.append("\",\"m_grade\":\"");
+			msg.append(x.getM_grade());
+			msg.append("\"}, ");
 		}
 		return comaSplit(msg);
 	}

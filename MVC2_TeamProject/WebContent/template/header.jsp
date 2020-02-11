@@ -25,5 +25,7 @@
 	</c:when>
 	<c:otherwise>
 		<a href="member/loginui.do">로그인</a>
+		
 	</c:otherwise>
 </c:choose>
+	<a href="board/list.do?flag=true">글목록</a>
